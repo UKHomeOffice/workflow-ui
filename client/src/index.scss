@@ -1,6 +1,18 @@
 @import "~govuk-frontend/govuk/all";
 
+a {
+    cursor: pointer;
+}
+html {
+    background-color: govuk-colour("light-grey");
+}
+
 body {
     overscroll-behavior-y: none;
     font-family: "nta", Arial, sans-serif;
+}
+
+
+.app-container {
+    @include govuk-width-container(1400px);
 }

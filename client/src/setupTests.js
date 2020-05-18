@@ -3,7 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
-
+import config from 'react-global-configuration';
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -56,3 +56,7 @@ jest.mock('react-i18next', () => ({
   },
   useTranslation: () => ({ t: (key) => key }),
 }));
+
+config.set({
+  serviceUrl: 'bar',
+}, { freeze: false });

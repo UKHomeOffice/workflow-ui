@@ -23,15 +23,6 @@ if (window.ENVIRONMENT_CONFIG) {
     authClientId: process.env.REACT_APP_AUTH_CLIENT_ID,
   });
 }
-const keycloakProvider = new Keycloak({
-  realm: config.get('authRealm'),
-  url: config.get('authUrl'),
-  clientId: config.get('authClientId'),
-});
-
-const keycloakProviderInitConfig = {
-  onLoad: 'login-required',
-};
 
 const RouterView = () => {
   const { t } = useTranslation();
@@ -51,8 +42,14 @@ const App = () => (
   <Suspense fallback={null}>
     <HelmetProvider>
       <KeycloakProvider
-        keycloak={keycloakProvider}
-        initConfig={keycloakProviderInitConfig}
+        keycloak={new Keycloak({
+          realm: config.get('authRealm'),
+          url: config.get('authUrl'),
+          clientId: config.get('authClientId'),
+        })}
+        initConfig={{
+          onLoad: 'login-required',
+        }}
       >
         <RouterView />
       </KeycloakProvider>

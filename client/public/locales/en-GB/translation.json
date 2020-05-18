@@ -8,7 +8,17 @@
       "title" : "An exception occurred",
       "description": "Please contact support",
       "retry" : "Retry operation"
+    },
+    "page-not-found": {
+      "title" : "The page you requested could not be found.",
+      "check-address" : "If you typed the web address, check it is correct.",
+      "paste-address" :  "If you pasted the web address, check you copied the entire address."
     }
+  },
+  "header": {
+    "service-name" : "Forms and Processes",
+    "sign-out" : "Sign out",
+    "support" : "Support"
   },
   "pages" : {
     "home" : {

@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NotFoundBoundary, useCurrentRoute } from 'react-navi';
+import { useCurrentRoute } from 'react-navi';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { useKeycloak } from '@react-keycloak/web';
 import Header from '../header';
 import Footer from '../footer';
 import Logger from '../../utils/logger';
-import PageNotFound from '../PageNotFound';
 
 const ErrorFallback = ({ resetErrorBoundary }) => {
   const { t } = useTranslation();
@@ -44,29 +43,27 @@ const Layout = ({ children }) => {
   const [keycloak] = useKeycloak();
   const route = useCurrentRoute();
   return (
-
     <>
-      <NotFoundBoundary render={PageNotFound}>
-        <ErrorBoundary
-          FallbackComponent={ErrorFallback}
-          onError={(error, componentStack) => {
-            Logger.error({
-              token: keycloak.token,
-              message: error.message,
-              path: route.url.pathname,
-              componentStack,
-            });
-          }}
-        >
-          <Header />
-          <div className="govuk-width-container">
-            <main className="govuk-main-wrapper">
-              {children}
-            </main>
-          </div>
-          <Footer />
-        </ErrorBoundary>
-      </NotFoundBoundary>
+      <Header />
+      <div className="app-container">
+        <main className="govuk-main-wrapper">
+          <ErrorBoundary
+            FallbackComponent={ErrorFallback}
+            onError={(error, componentStack) => {
+              Logger.error({
+                token: keycloak.token,
+                message: error.message,
+                path: route.url.pathname,
+                componentStack,
+              });
+            }}
+          >
+            {children}
+          </ErrorBoundary>
+        </main>
+      </div>
+
+      <Footer />
     </>
   );
 };
