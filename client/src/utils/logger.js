@@ -1,8 +1,3 @@
-/*
- * Copyright (C) 2020. Digital Patterns Limited - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- */
-
 import axios from 'axios';
 
 class Logger {

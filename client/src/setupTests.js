@@ -46,3 +46,13 @@ jest.mock('react-navi', () => ({
     },
   }),
 }));
+
+
+jest.mock('react-i18next', () => ({
+  withTranslation: () => (Component) => {
+    // eslint-disable-next-line no-param-reassign
+    Component.defaultProps = { ...Component.defaultProps, t: () => '' };
+    return Component;
+  },
+  useTranslation: () => ({ t: (key) => key }),
+}));
