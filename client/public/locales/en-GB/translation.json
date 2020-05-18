@@ -3,7 +3,17 @@
     "initialising" : "Initialising single sign on"
   },
   "loading": "Loading...",
+  "render": {
+    "error": {
+      "title" : "An exception occurred",
+      "description": "Please contact support",
+      "retry" : "Retry operation"
+    }
+  },
   "pages" : {
+    "home" : {
+      "title": "Home"
+    },
     "form": {
       "title" : "Form"
     },

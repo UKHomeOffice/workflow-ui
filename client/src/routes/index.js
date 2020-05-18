@@ -6,7 +6,7 @@ import { withAuthentication } from './utils';
 
 const routes = mount({
   '/': map((request, context) => withAuthentication(route({
-    title: context.t('pages.home.header'),
+    title: context.t('pages.home.title'),
     getView: () => import('../pages/home'),
   }))),
   '/forms': lazy(() => import('../pages/forms/routes')),
