@@ -3,21 +3,79 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
+    "@react-keycloak/web": "^2.1.1",
+    "i18next": "^19.4.4",
+    "i18next-browser-languagedetector": "^4.1.1",
+    "i18next-xhr-backend": "^3.2.2",
+    "keycloak-js": "^10.0.1",
+    "node-sass": "^4.14.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-navi": "^0.14.3",
+    "react-navi-helmet": "^0.14.3",
+    "react-scripts": "3.4.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^10.0.4",
+    "@testing-library/user-event": "^7.2.1",
+    "axios-mock-adapter": "^1.18.1",
+    "babel-eslint": "^10.1.0",
+    "cheerio": "^1.0.0-rc.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "husky": "^4.2.5",
+    "sinon": "^9.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "CI=true react-scripts test"
+    }
+  },
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "json",
+      "text"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "src/index.js",
+      "src/serviceWorker.js",
+      "src/i18n.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 80,
+        "lines": 80,
+        "statements": 90
+      }
+    }
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test-coverage": "react-scripts test \"--coverage\" \"--watchAll=false\"",
+    "test-coverage-watch": "react-scripts test \"--coverage\" \"--watchAll=true\"",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ignore-pattern node_modules/ --ext .js --ext .jsx --fix src"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "airbnb"
+    ]
   },
   "browserslist": {
     "production": [
