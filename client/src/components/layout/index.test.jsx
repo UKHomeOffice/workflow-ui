@@ -23,6 +23,7 @@ describe('Layout', () => {
 
     const wrapper = await mount(<Layout><ErrorComponent /></Layout>);
     expect(wrapper.find('.govuk-error-summary').length).toBe(1);
+    // eslint-disable-next-line no-console
     expect(console.error).toBeCalled();
     expect(Logger.error).toBeCalled();
 
