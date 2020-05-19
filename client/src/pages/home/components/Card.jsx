@@ -10,7 +10,14 @@ const Card = ({
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-full __card">
-        <a href={href} onClick={handleClick} className="card__body">
+        <a
+          href={href}
+          onClick={(e) => {
+            e.preventDefault();
+            handleClick();
+          }}
+          className="card__body"
+        >
           {
           isLoading ? (
             <span className="govuk-!-font-size-19 govuk-!-font-weight-bold">

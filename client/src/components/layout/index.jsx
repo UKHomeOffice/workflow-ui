@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useCurrentRoute } from 'react-navi';
+import { useCurrentRoute, useNavigation } from 'react-navi';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { useKeycloak } from '@react-keycloak/web';
@@ -42,11 +42,26 @@ ErrorFallback.propTypes = {
 const Layout = ({ children }) => {
   const [keycloak] = useKeycloak();
   const route = useCurrentRoute();
+  const navigation = useNavigation();
+  const { t } = useTranslation();
   return (
     <>
       <Header />
-      <div className="app-container" style={{ height: '100%' }}>
+      <div className="app-container" style={{ height: '100hv' }}>
         <main className="govuk-main-wrapper govuk-!-padding-top-3" role="main">
+          {route.url.pathname !== '/' ? (
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
+            <a
+              href="#"
+              onClick={async (e) => {
+                e.preventDefault();
+                await navigation.goBack();
+              }}
+              className="govuk-back-link"
+            >
+              {t('back')}
+            </a>
+          ) : null}
           <ErrorBoundary
             FallbackComponent={ErrorFallback}
             onError={(error, componentStack) => {

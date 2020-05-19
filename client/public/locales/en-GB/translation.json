@@ -2,6 +2,7 @@
   "keycloak" : {
     "initialising" : "Initialising single sign on"
   },
+  "back" : "Back",
   "loading": "Loading...",
   "render": {
     "error": {
@@ -22,6 +23,9 @@
     "new-service-1" : "This is a new service - your",
     "new-service-2" : "feedback",
     "new-service-3" : "will help use improve it"
+  },
+  "footer" : {
+    "powered-by" : "Powered by COP technology"
   },
   "pages" : {
     "home" : {

@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Layout from './index';
 import Logger from '../../utils/logger';
+import { mockGoBack } from '../../setupTests';
 
 jest.mock('../../utils/logger', () => ({
   error: jest.fn(),
@@ -29,5 +30,13 @@ describe('Layout', () => {
 
     const alert = wrapper.find('.govuk-error-summary__body').at(0);
     alert.find('button').at(0).simulate('click');
+  });
+
+  it('can click on back button', () => {
+    const wrapper = shallow(<Layout><div>Hello</div></Layout>);
+    wrapper.find('a').at(0).simulate('click', {
+      preventDefault: () => {},
+    });
+    expect(mockGoBack).toBeCalled();
   });
 });

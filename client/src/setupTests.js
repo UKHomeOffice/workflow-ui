@@ -13,6 +13,7 @@ configure({ adapter: new Adapter() });
 export const mockNavigate = jest.fn();
 export const mockLogout = jest.fn();
 export const mockLogin = jest.fn();
+export const mockGoBack = jest.fn();
 
 jest.mock('@react-keycloak/web', () => ({
   KeycloakProvider: ({ children }) => children,
@@ -42,6 +43,7 @@ jest.mock('@react-keycloak/web', () => ({
 jest.mock('react-navi', () => ({
   useNavigation: () => ({
     navigate: mockNavigate,
+    goBack: mockGoBack,
   }),
   NotFoundBoundary: ({ children }) => children,
   useCurrentRoute: () => ({
