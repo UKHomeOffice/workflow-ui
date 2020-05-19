@@ -8,6 +8,10 @@ import Card from './components/Card';
 import { mockNavigate } from '../../setupTests';
 
 describe('Home', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
   const mockAxios = new MockAdapter(axios);
   it('renders without crashing', () => {
     shallow(<Home />);
