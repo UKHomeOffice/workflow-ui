@@ -1,14 +1,12 @@
+$govuk-page-width: 1400px;
+
 @import "~govuk-frontend/govuk/all";
 
 a {
     cursor: pointer;
 }
-html {
-    background-color: govuk-colour("light-grey");
-}
 
 body {
-    overscroll-behavior-y: none;
     font-family: "nta", Arial, sans-serif;
 }
 

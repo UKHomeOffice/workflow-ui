@@ -16,20 +16,33 @@
     }
   },
   "header": {
-    "service-name" : "Forms and Processes",
+    "service-name" : "eForms",
     "sign-out" : "Sign out",
-    "support" : "Support"
+    "support" : "Support",
+    "new-service-1" : "This is a new service - your",
+    "new-service-2" : "feedback",
+    "new-service-3" : "will help use improve it"
   },
   "pages" : {
     "home" : {
-      "title": "Home"
+      "title": "eForms",
+      "header": "eForms home",
+      "card" : {
+        "forms": {
+          "footer": "Submit a form"
+        },
+        "tasks": {
+          "title" : "Tasks",
+          "footer": "Tasks assigned to you"
+        }
+      }
     },
     "form": {
-      "title" : "Form"
+      "title" : "eForm"
     },
     "forms": {
       "list": {
-        "title" : "Forms"
+        "title" : "eForms list"
       }
     },
     "task": {

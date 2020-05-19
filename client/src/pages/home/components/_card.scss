@@ -1,0 +1,47 @@
+@import "../../../../node_modules/govuk-frontend/govuk/helpers/colour";
+
+@media only screen and (max-width: 600px) {
+  .__card {
+    display: block;
+    float: left;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+}
+
+.__card {
+  display: block;
+  float: left;
+  margin-bottom: 30px;
+
+}
+
+.card__body {
+  display: block;
+  background-color: govuk-colour("mid-grey");
+  padding: 1em;
+  color: govuk-colour("black");
+  text-decoration: none;
+
+  span {
+    display: block;
+  }
+}
+
+a.card__body {
+  color: #005ea5;
+
+  &:hover, &:focus {
+    cursor: pointer;
+    background-color: govuk-colour("light-grey");
+    color: #2b8cc4;
+    text-decoration: none;
+  }
+}
+
+.card__footer {
+  display: block;
+  background-color: govuk-colour("light-grey");
+  padding: 1em;
+  height: 4em;
+}

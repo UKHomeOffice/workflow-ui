@@ -45,8 +45,8 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <div className="app-container">
-        <main className="govuk-main-wrapper">
+      <div className="app-container" style={{ height: '100%' }}>
+        <main className="govuk-main-wrapper govuk-!-padding-top-3" role="main">
           <ErrorBoundary
             FallbackComponent={ErrorFallback}
             onError={(error, componentStack) => {

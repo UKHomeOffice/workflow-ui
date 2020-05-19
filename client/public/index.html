@@ -25,8 +25,9 @@
     -->
     <title>Workflow UI</title>
   </head>
-  <body class="js-enabled">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+  <body>
+  <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
       This HTML file is a template.

@@ -9,6 +9,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "formiojs": "^4.9.27-rc.4",
+    "govuk-colours": "^1.1.0",
     "govuk-frontend": "^3.6.0",
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",
@@ -71,6 +72,7 @@
       }
     }
   },
+  "proxy": "http://localhost:8000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
