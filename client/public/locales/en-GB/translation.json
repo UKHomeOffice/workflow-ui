@@ -46,6 +46,8 @@
     },
     "forms": {
       "list": {
+        "caption" : "Forms",
+        "size" : "{{count}} forms",
         "title" : "eForms list"
       }
     },

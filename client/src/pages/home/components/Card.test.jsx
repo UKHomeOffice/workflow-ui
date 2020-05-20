@@ -14,6 +14,6 @@ describe('Card', () => {
       preventDefault: () => {
       },
     });
-    expect(mockHandle).toBeCalled()
+    expect(mockHandle).toBeCalled();
   });
 });

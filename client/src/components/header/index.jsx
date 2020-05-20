@@ -88,7 +88,6 @@ const StyledCol = styled.div`
 
 const NavLink = styled.a`
     margin-left: 20px;
-   
 `;
 
 const HeaderContent = styled.div`
