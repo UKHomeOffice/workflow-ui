@@ -48,7 +48,8 @@
       "list": {
         "caption" : "Forms",
         "size" : "{{count}} forms",
-        "title" : "eForms list"
+        "title" : "eForms list",
+        "load-more" : "Load more"
       }
     },
     "task": {

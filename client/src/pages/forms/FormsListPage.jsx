@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from 'react-navi';
+import _ from 'lodash';
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
-
 
 const FormsListPage = () => {
   const { t } = useTranslation();
@@ -22,30 +22,33 @@ const FormsListPage = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     const loadForms = async () => {
-      const { page, maxResults } = forms;
-      const params = {
-        startableInTasklist: true,
-        latestVersion: true,
-        active: true,
-        firstResult: page,
-        maxResults,
-      };
       if (axiosInstance) {
+        const { page, maxResults } = forms;
         try {
           const formsResponse = await axiosInstance.get('/camunda/engine-rest/process-definition', {
             cancelToken: source.token,
-            params,
+            params: {
+              startableInTasklist: true,
+              latestVersion: true,
+              active: true,
+              firstResult: page,
+              maxResults,
+            },
           });
 
           const formsCountResponse = await axiosInstance.get('/camunda/engine-rest/process-definition/count', {
             cancelToken: source.token,
-            params,
+            params: {
+              startableInTasklist: true,
+              latestVersion: true,
+              active: true,
+            },
           });
 
           if (isMounted.current) {
             setForms({
               isLoading: false,
-              data: formsResponse.data,
+              data: _.concat(forms.data, formsResponse.data),
               total: formsCountResponse.data.count,
               page,
               maxResults,
@@ -71,7 +74,6 @@ const FormsListPage = () => {
       source.cancel('Cancelling request');
     };
   }, [axiosInstance, isMounted, setForms, forms.page, forms.maxResults]);
-
 
   return (
     forms.isLoading ? <ApplicationSpinner />
@@ -108,6 +110,28 @@ const FormsListPage = () => {
                       </li>
                     );
                   })
+                }
+                {
+                  forms.total > forms.maxResults && forms.data.length < forms.total
+                    ? (
+                      <li>
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                        <a
+                          id="loadMore"
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            setForms({
+                              ...forms,
+                              page: (forms.page + 1) * forms.maxResults,
+                            });
+                          }}
+                          className="govuk-link"
+                          href="#"
+                        >
+                          {t('pages.forms.list.load-more')}
+                        </a>
+                      </li>
+                    ) : null
                 }
               </ul>
             </div>
