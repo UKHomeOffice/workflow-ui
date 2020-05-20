@@ -60,6 +60,35 @@ describe('FormsListPage', () => {
     expect(wrapper.find('h2').at(0).text()).not.toBe('');
   });
 
+  it('load more does not exist if results less than 20', async () => {
+    const mockData = [];
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < 4; i++) {
+      mockData.push({
+        id: `id${(Math.random() + Math.random())}`,
+        name: `name${i}`,
+      });
+    }
+
+    mockAxios.onGet('/camunda/engine-rest/process-definition')
+      .reply(200, mockData);
+
+    mockAxios.onGet('/camunda/engine-rest/process-definition/count')
+      .reply(200, {
+        count: 4,
+      });
+
+    const wrapper = mount(<FormsListPage />);
+
+    await act(async () => {
+      await Promise.resolve(wrapper);
+      await new Promise((resolve) => setImmediate(resolve));
+      await wrapper.update();
+    });
+
+    expect(wrapper.find('a[id="loadMore"]').exists()).toBe(false);
+  });
+
   it('can load more', async () => {
     const mockData = [];
     // eslint-disable-next-line no-plusplus
