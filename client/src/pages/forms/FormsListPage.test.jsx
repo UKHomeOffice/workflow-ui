@@ -3,14 +3,21 @@ import { shallow, mount } from 'enzyme';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { act } from '@testing-library/react';
+import _ from 'lodash';
 import FormsListPage from './FormsListPage';
 import { mockNavigate } from '../../setupTests';
 
+jest.mock('lodash', () => ({
+  ...require.requireActual('lodash'),
+  // eslint-disable-next-line no-param-reassign
+  debounce: (fn) => { fn.cancel = jest.fn(); return fn; },
+}));
+
 describe('FormsListPage', () => {
   const mockAxios = new MockAdapter(axios);
-
   beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
+    mockAxios.reset();
   });
 
   it('renders without crashing', () => {
@@ -123,5 +130,38 @@ describe('FormsListPage', () => {
       });
       await wrapper.update();
     });
+  });
+
+  it('can perform a search', async () => {
+    mockAxios.onGet('/camunda/engine-rest/process-definition')
+      .reply(200, []);
+
+    mockAxios.onGet('/camunda/engine-rest/process-definition/count')
+      .reply(200, {
+        count: 0,
+      });
+
+    const wrapper = mount(<FormsListPage />);
+
+    await act(async () => {
+      await Promise.resolve(wrapper);
+      await new Promise((resolve) => setImmediate(resolve));
+      await wrapper.update();
+    });
+
+    const search = wrapper.find('input[id="search"]').at(0);
+    expect(search).toBeDefined();
+    await act(async () => {
+      await search.simulate('change', {
+        target: {
+          value: 'test',
+        },
+      });
+      await wrapper.update();
+    });
+
+    const queryAxiosCall = _.find(mockAxios.history.get, (call) => call.params.nameLike === '%test%');
+
+    expect(queryAxiosCall).toBeDefined();
   });
 });

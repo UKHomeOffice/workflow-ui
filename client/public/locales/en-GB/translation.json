@@ -49,7 +49,9 @@
         "caption" : "Forms",
         "size" : "{{count}} forms",
         "title" : "eForms list",
-        "load-more" : "Load more"
+        "load-more" : "Load more",
+        "search" : "Search for a form",
+        "search-placeholder" : "Search form name"
       }
     },
     "task": {
