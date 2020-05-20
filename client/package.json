@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": false,
   "dependencies": {
+    "@digitalpatterns/formio-gds-template": "^1.5.0",
     "@react-keycloak/web": "^2.1.1",
     "@testing-library/jest-dom": "^4.2.4",
     "axios": "^0.19.2",
@@ -22,6 +23,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-error-boundary": "^2.2.1",
+    "react-formio": "^4.3.0",
     "react-global-configuration": "^1.4.0",
     "react-i18next": "^11.4.0",
     "react-navi": "^0.14.3",

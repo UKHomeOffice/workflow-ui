@@ -50,9 +50,11 @@ const FormsListPage = () => {
           });
 
           if (isMounted.current) {
+            const merged = _.merge(_.keyBy(forms.data, 'id'),
+              _.keyBy(formsResponse.data, 'id'));
             setForms({
               isLoading: false,
-              data: _.concat(forms.data, formsResponse.data),
+              data: _.values(merged),
               total: formsCountResponse.data.count,
               page,
               maxResults,
