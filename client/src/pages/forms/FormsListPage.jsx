@@ -143,8 +143,12 @@ const FormsListPage = () => {
                           }
                         >
                           {form.name}
+
                         </a>
+                        <p className="govuk-body govuk-!-margin-top-1">{form.description}</p>
+                        <hr className="govuk-section-break govuk-section-break--visible" />
                       </li>
+
                     );
                   })
                 }
