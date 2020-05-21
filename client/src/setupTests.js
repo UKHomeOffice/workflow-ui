@@ -30,6 +30,10 @@ jest.mock('@react-keycloak/web', () => ({
   useKeycloak: () => [
     {
       token: 'token',
+      authServerUrl: 'test',
+      realm: 'test',
+      clientId: 'client',
+      refreshToken: 'refreshToken',
       tokenParsed: {
         given_name: 'test',
         family_name: 'test',

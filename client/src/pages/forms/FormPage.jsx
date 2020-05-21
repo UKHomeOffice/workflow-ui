@@ -5,13 +5,21 @@ import gds from '@digitalpatterns/formio-gds-template';
 import axios from 'axios';
 import { useKeycloak } from '@react-keycloak/web';
 import { useNavigation } from 'react-navi';
+
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
+import { augmentRequest } from '../../utils/formioSupport';
+
 
 Formio.use(gds);
 
 const FormPage = ({ formId }) => {
   const [keycloak] = useKeycloak();
+  /* istanbul ignore next */
+  Formio.plugins = [
+    augmentRequest(keycloak, formId),
+  ];
+
   const isMounted = useIsMounted();
   const navigation = useNavigation();
 

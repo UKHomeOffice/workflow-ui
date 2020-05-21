@@ -131,7 +131,7 @@ const FormsListPage = () => {
                   forms.data.map((form) => {
                     const href = `/forms/${form.id}`;
                     return (
-                      <li key={form.id}>
+                      <li key={form.id} className="govuk-!-margin-bottom-2">
                         <a
                           onClick={async (e) => {
                             e.preventDefault();
