@@ -34,7 +34,7 @@ public class LogController {
     @Data
     public static class LogStatement {
         private String level;
-        private String message;
+        private Object message;
         private String userId;
         private String path;
         private Object componentStack;

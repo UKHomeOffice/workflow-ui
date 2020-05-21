@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Formio, Form } from 'react-formio';
 import gds from '@digitalpatterns/formio-gds-template';
@@ -6,10 +6,11 @@ import axios from 'axios';
 import { useKeycloak } from '@react-keycloak/web';
 import { useNavigation } from 'react-navi';
 
+import moment from 'moment';
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
 import { augmentRequest } from '../../utils/formioSupport';
-
+import Logger from '../../utils/logger';
 
 Formio.use(gds);
 
@@ -20,6 +21,11 @@ const FormPage = ({ formId }) => {
     augmentRequest(keycloak, formId),
   ];
 
+  const [time, setTime] = useState({
+    start: null,
+    end: null,
+    submitted: false,
+  });
   const isMounted = useIsMounted();
   const navigation = useNavigation();
 
@@ -70,13 +76,48 @@ const FormPage = ({ formId }) => {
     };
   }, [axiosInstance, formId, setForm, isMounted]);
 
+  const loggerRef = useRef(Logger);
+
+  useEffect(() => {
+    const logger = loggerRef.current;
+    if ((form.data && form.data.name) && time.end) {
+      logger.info({
+        token: keycloak.token,
+        path: `/form/${formId}`,
+        message: {
+          log: time.submitted ? 'Form has been submitted' : 'Form has been cancelled',
+          name: form.data.name,
+          submitted: time.submitted,
+          ...time,
+          completionTimeInSeconds: moment.duration(moment(time.end)
+            .diff(moment(time.start))).asSeconds(),
+        },
+      });
+    }
+  }, [time, keycloak.token, form.data, formId]);
+
   if (form.isLoading) {
     return <ApplicationSpinner />;
   }
+
   return (
     !form.data ? <div>Oops!</div> : (
       <Form
         form={form.data}
+        onFormLoad={() => {
+          const start = new Date();
+          setTime({
+            ...time,
+            start,
+          });
+        }}
+        onSubmit={() => {
+          setTime({
+            ...time,
+            end: new Date(),
+            submitted: true,
+          });
+        }}
         options={{
           breadcrumbSettings: {
             clickable: false,
@@ -84,6 +125,11 @@ const FormPage = ({ formId }) => {
           noAlerts: true,
           hooks: {
             beforeCancel: async () => {
+              setTime({
+                ...time,
+                end: new Date(),
+                submitted: false,
+              });
               await navigation.navigate('/forms');
             },
             buttonSettings: {

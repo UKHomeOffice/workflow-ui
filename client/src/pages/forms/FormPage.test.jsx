@@ -7,6 +7,12 @@ import { Form } from 'react-formio';
 import FormPage from './FormPage';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
 import { mockNavigate } from '../../setupTests';
+import Logger from '../../utils/logger';
+
+jest.mock('../../utils/logger', () => ({
+  info: jest.fn(),
+}));
+
 
 describe('FormPage', () => {
   const mockAxios = new MockAdapter(axios);
@@ -139,5 +145,74 @@ describe('FormPage', () => {
 
     form.props().options.hooks.beforeCancel();
     expect(mockNavigate).toBeCalledWith('/forms');
+  });
+
+  it('expect form time to be logged', async () => {
+    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+      .reply(200, {
+        key: 'formKey',
+      });
+
+    mockAxios.onGet('/form/name/formKey')
+      .reply(200, {
+        name: 'test',
+        display: 'form',
+        versionId: 'version',
+        title: 'title',
+        components: [
+          {
+            id: 'eoduazt',
+            key: 'textField1',
+            case: '',
+            mask: false,
+            tags: '',
+            type: 'textfield',
+            input: true,
+            label: 'Text Field',
+            logic: [],
+            hidden: false,
+            prefix: '',
+            suffix: '',
+            unique: false,
+            widget: {
+              type: 'input',
+            },
+          },
+          {
+            id: 'e23op57',
+            key: 'submit',
+            size: 'md',
+            type: 'button',
+            block: false,
+            input: true,
+            label: 'Submit',
+            theme: 'primary',
+            action: 'submit',
+            hidden: false,
+            prefix: '',
+            suffix: '',
+            unique: false,
+            widget: {
+              type: 'input',
+            },
+          }],
+      });
+
+    const wrapper = mount(<FormPage formId="id" />);
+
+    await act(async () => {
+      await Promise.resolve(wrapper);
+      await new Promise((resolve) => setImmediate(resolve));
+      await wrapper.update();
+    });
+
+    expect(wrapper.find(ApplicationSpinner).exists()).toBe(false);
+    wrapper.find(Form).at(0).props().onSubmit();
+
+    await act(async () => {
+      await wrapper.update();
+    });
+
+    expect(Logger.info).toBeCalled();
   });
 });
