@@ -6,7 +6,7 @@ import { act } from '@testing-library/react';
 import { Form } from 'react-formio';
 import FormPage from './FormPage';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
-import {mockNavigate} from "../../setupTests";
+import { mockNavigate } from '../../setupTests';
 
 describe('FormPage', () => {
   const mockAxios = new MockAdapter(axios);
