@@ -17,7 +17,7 @@
     }
   },
   "header": {
-    "service-name" : "eForms",
+    "service-name" : "eForms Platform",
     "sign-out" : "Sign out",
     "support" : "Support",
     "new-service-1" : "This is a new service - your",
@@ -30,7 +30,7 @@
   "pages" : {
     "home" : {
       "title": "eForms",
-      "header": "eForms home",
+      "header": "eForms Dashboard",
       "card" : {
         "forms": {
           "footer": "Submit a form"
@@ -46,7 +46,7 @@
     },
     "forms": {
       "list": {
-        "caption" : "Forms",
+        "caption" : "eForms",
         "size" : "{{count}} forms",
         "title" : "eForms list",
         "load-more" : "Load more",

@@ -1,0 +1,29 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${auth.url:http://localhost:8080/auth}/realms/${auth.realm:elf}
+
+server:
+  ssl:
+    enabled: ${ssl.enabled:false}
+    key-password: ${ssl.key.store.password:}
+    key-store-type: ${ssl.key.store.type:PKCS12}
+    key-store: ${ssl.key.store.path:}
+    key-alias: ${ssl.key.store.alias:}
+  port: ${server-port:8080}
+
+
+zuul:
+  routes:
+    form-service:
+      path: /form/**
+      strip-prefix: false
+      url: ${formApi.url:http://localhost:4000}
+    workflow-service:
+      strip-prefix: false
+      path: /camunda/**
+      url: ${workflowService.url:http://localhost:8000}
+  sensitive-headers: Cookie,Set-Cookie
+

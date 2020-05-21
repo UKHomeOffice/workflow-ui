@@ -20,10 +20,9 @@ export const useAxios = () => {
     });
 
     instance.interceptors.response.use((response) => response, async (error) => {
-      const message = `${error.response.data.message}`;
       Logger.error({
         token: keycloak.token,
-        message,
+        message: error.response.data,
         path: routeRef.current.url.pathname,
       });
       return Promise.reject(error);

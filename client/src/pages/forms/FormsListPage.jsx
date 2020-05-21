@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from 'react-navi';
@@ -20,11 +20,11 @@ const FormsListPage = () => {
     search: '',
   });
 
+  const dataRef = useRef(forms.data);
   useEffect(() => {
     const source = axios.CancelToken.source();
     const loadForms = async () => {
       if (axiosInstance) {
-        const { page, maxResults } = forms;
         try {
           const params = {
             startableInTasklist: true,
@@ -50,14 +50,15 @@ const FormsListPage = () => {
           });
 
           if (isMounted.current) {
-            const merged = _.merge(_.keyBy(forms.data, 'id'),
+            const merged = _.merge(_.keyBy(dataRef.current, 'id'),
               _.keyBy(formsResponse.data, 'id'));
+            dataRef.current = merged;
             setForms({
               isLoading: false,
               data: _.values(merged),
               total: formsCountResponse.data.count,
-              page,
-              maxResults,
+              page: forms.page,
+              maxResults: forms.maxResults,
               search: forms.search,
             });
           }
@@ -67,8 +68,8 @@ const FormsListPage = () => {
               isLoading: false,
               data: [],
               total: 0,
-              page,
-              maxResults,
+              page: forms.page,
+              maxResults: forms.maxResults,
               search: null,
             });
           }
@@ -81,9 +82,11 @@ const FormsListPage = () => {
     return () => {
       source.cancel('Cancelling request');
     };
-  }, [axiosInstance, isMounted, setForms, forms.page, forms.maxResults, forms.search]);
+  }, [axiosInstance, isMounted, setForms, forms.page,
+    forms.maxResults, forms.search]);
 
   const search = debounce((text) => {
+    dataRef.current = [];
     setForms({
       ...forms,
       search: text,

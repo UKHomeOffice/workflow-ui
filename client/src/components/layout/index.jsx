@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <div className="app-container" style={{ height: '100hv' }}>
+      <div className="app-container" style={{ height: '100vh' }}>
         <main className="govuk-main-wrapper govuk-!-padding-top-3" role="main">
           {route.url.pathname !== '/' ? (
             // eslint-disable-next-line jsx-a11y/anchor-is-valid

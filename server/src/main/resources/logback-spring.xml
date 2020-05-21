@@ -1,0 +1,40 @@
+<!--
+  ~ Copyright (C) 2020. Digital Patterns Limited - All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  -->
+
+<configuration>
+    <springProfile name="!test">
+        <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp>
+                        <timeZone>UTC</timeZone>
+                    </timestamp>
+                    <pattern>
+                        <pattern>
+                            {
+                            "severity": "%level",
+                            "service": "${springAppName:-}",
+                            "pid": "${PID:-}",
+                            "thread": "%thread",
+                            "class": "%logger{40}",
+                            "message": "%message",
+                            "userId": "%X{userId}"
+                            }
+                        </pattern>
+                    </pattern>
+                </providers>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+        <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    </springProfile>
+</configuration>
