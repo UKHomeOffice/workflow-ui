@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import { Formio, Form } from 'react-formio';
 import gds from '@digitalpatterns/formio-gds-template';
 import axios from 'axios';
+import { useKeycloak } from '@react-keycloak/web';
+import { useNavigation } from 'react-navi';
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
 
 Formio.use(gds);
 
 const FormPage = ({ formId }) => {
+  const [keycloak] = useKeycloak();
   const isMounted = useIsMounted();
+  const navigation = useNavigation();
+
   const [form, setForm] = useState({
     isLoading: true,
     data: null,
@@ -69,6 +74,30 @@ const FormPage = ({ formId }) => {
             clickable: false,
           },
           noAlerts: true,
+          hooks: {
+            beforeCancel: async () => {
+              await navigation.navigate('/forms');
+            },
+            buttonSettings: {
+              showCancel: true,
+            },
+            beforeSubmit: (submission, next) => {
+              const formio = form.data;
+              const {
+                versionId, id, title, name,
+              } = formio;
+              // eslint-disable-next-line no-param-reassign
+              submission.data.form = {
+                formVersionId: versionId,
+                formId: id,
+                title,
+                name,
+                submissionDate: new Date(),
+                submittedBy: keycloak.tokenParsed.email,
+              };
+              next();
+            },
+          },
         }}
       />
     )
