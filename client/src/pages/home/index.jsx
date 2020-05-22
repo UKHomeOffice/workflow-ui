@@ -24,7 +24,6 @@ const Home = () => {
     count: 0,
   });
   const isMounted = useIsMounted();
-
   useEffect(() => {
     const source = axios.CancelToken.source();
     if (axiosInstance) {
@@ -51,11 +50,13 @@ const Home = () => {
         }
       });
 
-      axiosInstance.get('/camunda/engine-rest/task/count', {
+
+      axiosInstance({
+        method: 'POST',
+        url: '/camunda/engine-rest/task/count',
         cancelToken: source.token,
-        params: {
+        data: {
           assignee: keycloak.tokenParsed.email,
-          owner: keycloak.tokenParsed.email,
         },
       }).then((response) => {
         if (isMounted.current) {
@@ -79,8 +80,9 @@ const Home = () => {
     };
   }, [axiosInstance, setFormsCount, setTasksCount, isMounted, keycloak.tokenParsed.email]);
 
+
   return (
-    <div>
+    <div className="govuk-!-margin-top-7">
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <h2 className="govuk-heading-l">

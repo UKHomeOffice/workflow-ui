@@ -7,12 +7,14 @@ import { useKeycloak } from '@react-keycloak/web';
 import Header from '../header';
 import Footer from '../footer';
 import Logger from '../../utils/logger';
+import SubmissionConfirmation from '../SubmissionConfirmation';
+import { SubmissionContextProvider } from '../../utils/SubmissionContext';
 
 const ErrorFallback = ({ resetErrorBoundary }) => {
   const { t } = useTranslation();
   return (
     <div
-      className="govuk-width-container govuk-error-summary"
+      className="govuk-width-container govuk-error-summary govuk-!-margin-top-5"
       aria-labelledby="error-summary-title"
       role="alert"
       tabIndex="-1"
@@ -48,34 +50,37 @@ const Layout = ({ children }) => {
     <>
       <Header />
       <div className="app-container" style={{ height: '100vh' }}>
-        <main className="govuk-main-wrapper govuk-!-padding-top-3" role="main">
-          {route.url.pathname !== '/' ? (
-            // eslint-disable-next-line jsx-a11y/anchor-is-valid
-            <a
-              href="#"
-              onClick={async (e) => {
-                e.preventDefault();
-                await navigation.goBack();
-              }}
-              className="govuk-back-link"
-            >
-              {t('back')}
-            </a>
-          ) : null}
-          <ErrorBoundary
-            FallbackComponent={ErrorFallback}
-            onError={(error, componentStack) => {
-              Logger.error({
-                token: keycloak.token,
-                message: error.message,
-                path: route.url.pathname,
-                componentStack,
-              });
-            }}
-          >
-            {children}
-          </ErrorBoundary>
-        </main>
+        <ErrorBoundary
+          FallbackComponent={ErrorFallback}
+          onError={(error, componentStack) => {
+            Logger.error({
+              token: keycloak.token,
+              message: error.message,
+              path: route.url.pathname,
+              componentStack,
+            });
+          }}
+        >
+          <main className="govuk-main-wrapper govuk-!-padding-top-3" role="main">
+            <SubmissionContextProvider>
+              <SubmissionConfirmation />
+              {route.url.pathname !== '/' ? (
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                <a
+                  href="#"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await navigation.goBack();
+                  }}
+                  className="govuk-back-link"
+                >
+                  {t('back')}
+                </a>
+              ) : null}
+              {children}
+            </SubmissionContextProvider>
+          </main>
+        </ErrorBoundary>
       </div>
 
       <Footer />

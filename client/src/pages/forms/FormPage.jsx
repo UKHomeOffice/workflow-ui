@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useRef, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Formio, Form } from 'react-formio';
 import gds from '@digitalpatterns/formio-gds-template';
@@ -9,12 +11,15 @@ import { useNavigation } from 'react-navi';
 import moment from 'moment';
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
-import { augmentRequest } from '../../utils/formioSupport';
+import { augmentRequest, interpolate } from '../../utils/formioSupport';
 import Logger from '../../utils/logger';
+import apiHooks from './hooks';
 
 Formio.use(gds);
 
 const FormPage = ({ formId }) => {
+  const { submitForm } = apiHooks();
+
   const [keycloak] = useKeycloak();
   /* istanbul ignore next */
   Formio.plugins = [
@@ -33,7 +38,11 @@ const FormPage = ({ formId }) => {
     isLoading: true,
     data: null,
   });
+
+  const [submissionData, setSubmissionData] = useState(null);
+
   const axiosInstance = useAxios();
+
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -99,9 +108,23 @@ const FormPage = ({ formId }) => {
   if (form.isLoading) {
     return <ApplicationSpinner />;
   }
-
+  if (form.data) {
+    interpolate(form.data, {
+      keycloakContext: {
+        accessToken: keycloak.token,
+        refreshToken: keycloak.refreshToken,
+        sessionId: keycloak.tokenParsed.session_state,
+        email: keycloak.tokenParsed.email,
+        givenName: keycloak.tokenParsed.given_name,
+        familyName: keycloak.tokenParsed.family_name,
+        subject: keycloak.subject,
+        url: keycloak.authServerUrl,
+        realm: keycloak.realm,
+      },
+    });
+  }
   return (
-    !form.data ? <div>Oops!</div> : (
+    !form.data ? null : (
       <Form
         form={form.data}
         onFormLoad={() => {
@@ -117,7 +140,9 @@ const FormPage = ({ formId }) => {
             end: new Date(),
             submitted: true,
           });
+          submitForm(submissionData, form, formId);
         }}
+        onChange={setSubmissionData}
         options={{
           breadcrumbSettings: {
             clickable: false,

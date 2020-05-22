@@ -23,7 +23,7 @@ describe('Home', () => {
         count: 10,
       });
 
-    mockAxios.onGet('/camunda/engine-rest/task/count')
+    mockAxios.onPost('/camunda/engine-rest/task/count')
       .reply(200, {
         count: 10,
       });
@@ -48,7 +48,7 @@ describe('Home', () => {
     mockAxios.onGet('/camunda/engine-rest/process-definition/count')
       .reply(500, {});
 
-    mockAxios.onGet('/camunda/engine-rest/task/count')
+    mockAxios.onPost('/camunda/engine-rest/task/count')
       .reply(500, {});
 
     const wrapper = mount(<Home />);
@@ -73,7 +73,7 @@ describe('Home', () => {
         count: 10,
       });
 
-    mockAxios.onGet('/camunda/engine-rest/task/count')
+    mockAxios.onPost('/camunda/engine-rest/task/count')
       .reply(200, {
         count: 10,
       });

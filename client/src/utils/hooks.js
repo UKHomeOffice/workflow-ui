@@ -25,6 +25,7 @@ export const useAxios = () => {
         message: error.response.data,
         path: routeRef.current.url.pathname,
       });
+
       return Promise.reject(error);
     });
 

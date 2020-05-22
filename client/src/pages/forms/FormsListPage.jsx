@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useRef, useState,
+} from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from 'react-navi';
@@ -32,7 +34,7 @@ const FormsListPage = () => {
             active: true,
           };
 
-          if (forms.search && forms.search !== '') {
+          if (forms.search && (forms.search !== '' && forms.search.length > 3)) {
             params.nameLike = `%${forms.search}%`;
           }
           const formsResponse = await axiosInstance.get('/camunda/engine-rest/process-definition', {
@@ -111,16 +113,21 @@ const FormsListPage = () => {
                 <label className="govuk-label" htmlFor="search">
                   {t('pages.forms.list.search')}
                 </label>
+                <span id="search-hint" className="govuk-hint">
+                  {t('pages.forms.list.search-hint')}
+                </span>
                 <input
                   onChange={(e) => {
                     search(e.target.value);
                   }}
+                  spellCheck="false"
                   className="govuk-input govuk-input--width-20"
                   placeholder={t('pages.forms.list.search-placeholder')}
                   id="search"
                   name="search"
                   type="text"
                 />
+
               </div>
             </div>
           </div>

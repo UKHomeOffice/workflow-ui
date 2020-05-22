@@ -13,6 +13,11 @@ jest.mock('../../utils/logger', () => ({
   info: jest.fn(),
 }));
 
+const mockSubmitForm = jest.fn();
+
+jest.mock('./hooks', () => () => ({
+  submitForm: mockSubmitForm,
+}));
 
 describe('FormPage', () => {
   const mockAxios = new MockAdapter(axios);
@@ -207,12 +212,11 @@ describe('FormPage', () => {
     });
 
     expect(wrapper.find(ApplicationSpinner).exists()).toBe(false);
-    wrapper.find(Form).at(0).props().onSubmit();
-
-    await act(async () => {
-      await wrapper.update();
-    });
+    const form = wrapper.find(Form).at(0);
+    const formProps = form.props();
+    formProps.onSubmit();
 
     expect(Logger.info).toBeCalled();
+    expect(mockSubmitForm).toBeCalled();
   });
 });

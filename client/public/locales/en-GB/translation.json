@@ -42,7 +42,12 @@
       }
     },
     "form": {
-      "title" : "eForm"
+      "title" : "eForm",
+      "submission" : {
+        "success-message": "Your form was successfully submitted",
+        "your-reference" : "Your reference is {{reference}}",
+        "close" : "Close confirmation"
+      }
     },
     "forms": {
       "list": {
@@ -51,7 +56,8 @@
         "title" : "eForms list",
         "load-more" : "Load more",
         "search" : "Search for a form",
-        "search-placeholder" : "Search form name"
+        "search-placeholder" : "Search form name",
+        "search-hint": "Must be greater than 3 characters"
       }
     },
     "task": {
