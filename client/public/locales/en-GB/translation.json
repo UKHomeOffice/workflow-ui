@@ -30,7 +30,7 @@
   "pages" : {
     "home" : {
       "title": "eForms",
-      "header": "eForms Dashboard",
+      "header": "eForms/Tasks Dashboard",
       "card" : {
         "forms": {
           "footer": "Submit a form"
