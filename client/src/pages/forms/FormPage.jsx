@@ -10,6 +10,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useNavigation } from 'react-navi';
 
 import moment from 'moment';
+import _ from 'lodash';
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
 import { augmentRequest, interpolate } from '../../utils/formioSupport';
@@ -21,7 +22,7 @@ Formio.use(gds);
 
 const FormPage = ({ formId }) => {
   const { submitForm } = apiHooks();
-  const { setAlertContext } = useContext(AlertContext);
+  const { alertContext, setAlertContext } = useContext(AlertContext);
   const formRef = useRef();
 
   const [keycloak] = useKeycloak();
@@ -127,6 +128,34 @@ const FormPage = ({ formId }) => {
       },
     });
   }
+
+  const validate = (formInstance, data) => {
+    if (!formInstance || !alertContext) {
+      return;
+    }
+    let instance;
+
+    // eslint-disable-next-line no-underscore-dangle
+    if (formInstance._form.display === 'wizard') {
+      instance = formInstance.currentPage;
+    } else {
+      instance = formInstance;
+    }
+
+    if (instance && instance.isValid(data.value, true)) {
+      setAlertContext(null);
+    } else {
+      const errors = _.filter(alertContext.errors,
+        (error) => data.changed && (error.component.key !== data.changed.component.key)
+         && !data.changed.isValid);
+      setAlertContext({
+        type: 'form-error',
+        errors,
+        form: formRef.current,
+      });
+    }
+  };
+
   return (
     !form.data ? null : (
       <Form
@@ -147,7 +176,10 @@ const FormPage = ({ formId }) => {
           });
           submitForm(submissionData, form, formId);
         }}
-        onChange={setSubmissionData}
+        onChange={(data) => {
+          setSubmissionData(data);
+          validate(formRef.current.formio, data);
+        }}
         onError={(errors) => {
           setAlertContext({
             type: 'form-error',

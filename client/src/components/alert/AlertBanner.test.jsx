@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { mount } from 'enzyme';
 import { act } from '@testing-library/react';
+import { Form } from 'react-formio';
 import { AlertContext, AlertContextProvider } from '../../utils/AlertContext';
 import AlertBanner from './AlertBanner';
 import ApiErrorAlert from './ApiErrorAlert';
+import FormErrorsAlert from './FormErrorsAlert';
 
 describe('AlertBanner', () => {
   it('renders nothing if context is empty', async () => {
@@ -131,5 +133,66 @@ describe('AlertBanner', () => {
     });
 
     expect(wrapper.find(ApiErrorAlert).exists()).toBe(true);
+  });
+
+  it('renders form alert error', async () => {
+    const form = await mount(
+      <Form
+        form={{
+          display: 'form',
+          components: [{
+            key: 'textField',
+            type: 'textfield',
+            id: 'id',
+          }],
+        }}
+      />,
+    );
+
+    await act(async () => {
+      await Promise.resolve(form);
+      await new Promise((resolve) => setImmediate(resolve));
+      await form.update();
+    });
+
+   await form.instance().createPromise;
+    const TestComponent = () => {
+      const { setAlertContext } = useContext(AlertContext);
+
+      return (
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              setAlertContext({
+                type: 'form-error',
+                form: form.instance(),
+                errors: [{
+                  component: {
+                    id: 'id',
+                    key: 'textField',
+                  },
+                  message: 'Textfield is required',
+                }],
+              });
+            }}
+          >
+            Trigger
+          </button>
+        </div>
+      );
+    };
+    const wrapper = await mount(
+      <AlertContextProvider>
+        <AlertBanner />
+        <TestComponent />
+      </AlertContextProvider>,
+    );
+    await act(async () => {
+      await wrapper.find('button').at(0).simulate('click');
+      await wrapper.update();
+    });
+
+    expect(wrapper.find(FormErrorsAlert).exists()).toBe(true);
   });
 });

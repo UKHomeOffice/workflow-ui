@@ -56,7 +56,12 @@ describe('FormPage', () => {
         components: [],
       });
 
-    const wrapper = mount(<FormPage formId="id" />);
+    const wrapper = await mount(
+      <AlertContextProvider>
+        <AlertBanner />
+        <FormPage formId="id" />
+      </AlertContextProvider>,
+    );
 
     await act(async () => {
       await Promise.resolve(wrapper);
@@ -133,7 +138,12 @@ describe('FormPage', () => {
           }],
       });
 
-    const wrapper = mount(<FormPage formId="id" />);
+    const wrapper = await mount(
+      <AlertContextProvider>
+        <AlertBanner />
+        <FormPage formId="id" />
+      </AlertContextProvider>,
+    );
 
     await act(async () => {
       await Promise.resolve(wrapper);
@@ -206,7 +216,12 @@ describe('FormPage', () => {
           }],
       });
 
-    const wrapper = mount(<FormPage formId="id" />);
+    const wrapper = await mount(
+      <AlertContextProvider>
+        <AlertBanner />
+        <FormPage formId="id" />
+      </AlertContextProvider>,
+    );
 
     await act(async () => {
       await Promise.resolve(wrapper);
@@ -287,7 +302,7 @@ describe('FormPage', () => {
           }],
       });
 
-    const wrapper = mount(
+    const wrapper = await mount(
       <AlertContextProvider>
         <AlertBanner />
         <FormPage formId="id" />
@@ -301,7 +316,7 @@ describe('FormPage', () => {
     });
 
     const form = wrapper.find(Form).at(0);
-
+    await form.instance().createPromise
     form.instance().props.onError([{
       component: {
         id: 'id',
