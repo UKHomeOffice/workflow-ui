@@ -1,13 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import axios from 'axios';
 
 import { useKeycloak } from '@react-keycloak/web';
 import { useCurrentRoute } from 'react-navi';
 import Logger from './logger';
+import { AlertContext } from './AlertContext';
 
 export const useAxios = () => {
   const [keycloak, initialized] = useKeycloak();
   const [axiosInstance, setAxiosInstance] = useState({});
+  const { setAlertContext } = useContext(AlertContext);
 
   const routeRef = useRef(useCurrentRoute());
 
@@ -26,6 +30,15 @@ export const useAxios = () => {
         path: routeRef.current.url.pathname,
       });
 
+      setAlertContext({
+        type: 'api-error',
+        errors: [{
+          status: error.response.status,
+          message: error.message,
+          path: error.response.config.url,
+        }],
+      });
+
       return Promise.reject(error);
     });
 
@@ -34,7 +47,7 @@ export const useAxios = () => {
     return () => {
       setAxiosInstance({});
     };
-  }, [initialized, keycloak.token]);
+  }, [initialized, keycloak.token, setAlertContext]);
 
   return axiosInstance.instance;
 };

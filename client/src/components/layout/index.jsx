@@ -7,8 +7,8 @@ import { useKeycloak } from '@react-keycloak/web';
 import Header from '../header';
 import Footer from '../footer';
 import Logger from '../../utils/logger';
-import SubmissionConfirmation from '../SubmissionConfirmation';
-import { SubmissionContextProvider } from '../../utils/SubmissionContext';
+import AlertBanner from '../alert/AlertBanner';
+import { AlertContextProvider } from '../../utils/AlertContext';
 
 const ErrorFallback = ({ resetErrorBoundary }) => {
   const { t } = useTranslation();
@@ -62,8 +62,8 @@ const Layout = ({ children }) => {
           }}
         >
           <main className="govuk-main-wrapper govuk-!-padding-top-3" role="main">
-            <SubmissionContextProvider>
-              <SubmissionConfirmation />
+            <AlertContextProvider>
+              <AlertBanner />
               {route.url.pathname !== '/' ? (
               // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 <a
@@ -78,7 +78,7 @@ const Layout = ({ children }) => {
                 </a>
               ) : null}
               {children}
-            </SubmissionContextProvider>
+            </AlertContextProvider>
           </main>
         </ErrorBoundary>
       </div>

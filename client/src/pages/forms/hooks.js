@@ -2,13 +2,13 @@ import { useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from 'react-navi';
 import { useAxios } from '../../utils/hooks';
-import { SubmissionContext } from '../../utils/SubmissionContext';
+import { AlertContext } from '../../utils/AlertContext';
 
 
 export default () => {
   const axiosInstance = useAxios();
   const { t } = useTranslation();
-  const { updateSubmissionContext } = useContext(SubmissionContext);
+  const { setAlertContext } = useContext(AlertContext);
   const navigation = useNavigation();
 
   const submitForm = useCallback((submission, formInfo, id) => {
@@ -23,7 +23,8 @@ export default () => {
         variables,
         businessKey: submission.data.businessKey,
       }).then(async () => {
-        updateSubmissionContext({
+        setAlertContext({
+          type: 'form-submission',
           status: 'successful',
           message: t('pages.form.submission.success-message'),
           reference: `${submission.data.businessKey}`,
@@ -31,7 +32,7 @@ export default () => {
         await navigation.navigate('/');
       });
     }
-  }, [axiosInstance, navigation, updateSubmissionContext, t]);
+  }, [axiosInstance, navigation, setAlertContext, t]);
 
   return {
     submitForm,

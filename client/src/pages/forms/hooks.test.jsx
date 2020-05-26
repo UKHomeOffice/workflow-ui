@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import React from 'react';
 import apiHooks from './hooks';
 import { mockNavigate } from '../../setupTests';
-import { SubmissionContextProvider } from '../../utils/SubmissionContext';
+import { AlertContextProvider } from '../../utils/AlertContext';
 
 describe('hooks', () => {
   const mockAxios = new MockAdapter(axios);
@@ -14,9 +14,9 @@ describe('hooks', () => {
   it('can handle submit', async () => {
     // eslint-disable-next-line react/prop-types
     const wrapper = ({ children }) => (
-      <SubmissionContextProvider>
+      <AlertContextProvider>
         {children}
-      </SubmissionContextProvider>
+      </AlertContextProvider>
     );
     const { result } = renderHook(() => apiHooks(), { wrapper });
     await act(async () => {

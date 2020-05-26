@@ -4,6 +4,16 @@
   },
   "back" : "Back",
   "loading": "Loading...",
+  "error" : {
+    "details": "Error details",
+    "title" : "We are experiencing technical problems",
+    "409" : "The form has already been submitted",
+    "401/403" : "Unable to complete your request due to authorization issues.",
+    "400" : "Unable to complete your request due to form submission issues.",
+    "50x": "Internal system error.",
+    "contact-support" : "Please contact support by clicking",
+    "error-info" : "URL {{path}} - Code: {{status}}"
+  },
   "render": {
     "error": {
       "title" : "An exception occurred",
