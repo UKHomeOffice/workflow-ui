@@ -8,6 +8,9 @@ import FormPage from './FormPage';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
 import { mockNavigate } from '../../setupTests';
 import Logger from '../../utils/logger';
+import AlertBanner from '../../components/alert/AlertBanner';
+import { AlertContextProvider } from '../../utils/AlertContext';
+import FormErrorsAlert from '../../components/alert/FormErrorsAlert';
 
 jest.mock('../../utils/logger', () => ({
   info: jest.fn(),
@@ -218,5 +221,99 @@ describe('FormPage', () => {
 
     expect(Logger.info).toBeCalled();
     expect(mockSubmitForm).toBeCalled();
+  });
+
+  it('renders error on form', async () => {
+    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+      .reply(200, {
+        key: 'formKey',
+      });
+
+    mockAxios.onGet('/form/name/formKey')
+      .reply(200, {
+        name: 'test',
+        display: 'form',
+        versionId: 'version',
+        title: 'title',
+        components: [
+          {
+            id: 'eoduazt',
+            key: 'textField1',
+            case: '',
+            mask: false,
+            tags: '',
+            type: 'textfield',
+            input: true,
+            label: 'Text Field',
+            logic: [],
+            hidden: false,
+            prefix: '',
+            suffix: '',
+            unique: false,
+            validate: {
+              json: '',
+              custom: '',
+              unique: false,
+              pattern: '',
+              multiple: false,
+              required: true,
+              maxLength: '',
+              minLength: '',
+              customMessage: '',
+              customPrivate: false,
+              strictDateValidation: false,
+            },
+            widget: {
+              type: 'input',
+            },
+          },
+          {
+            id: 'e23op57',
+            key: 'submit',
+            size: 'md',
+            type: 'button',
+            block: false,
+            input: true,
+            label: 'Submit',
+            theme: 'primary',
+            action: 'submit',
+            hidden: false,
+            prefix: '',
+            suffix: '',
+            unique: false,
+            widget: {
+              type: 'input',
+            },
+          }],
+      });
+
+    const wrapper = mount(
+      <AlertContextProvider>
+        <AlertBanner />
+        <FormPage formId="id" />
+      </AlertContextProvider>,
+    );
+
+    await act(async () => {
+      await Promise.resolve(wrapper);
+      await new Promise((resolve) => setImmediate(resolve));
+      await wrapper.update();
+    });
+
+    const form = wrapper.find(Form).at(0);
+
+    form.instance().props.onError([{
+      component: {
+        id: 'id',
+        key: 'textField',
+      },
+      message: 'Textfield is required',
+    }]);
+
+    await act(async () => {
+      await wrapper.update();
+    });
+
+    expect(wrapper.find(FormErrorsAlert).exists()).toBe(true);
   });
 });
