@@ -1,4 +1,5 @@
 import React, {
+  useContext,
   useEffect, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -14,11 +15,14 @@ import ApplicationSpinner from '../../components/ApplicationSpinner';
 import { augmentRequest, interpolate } from '../../utils/formioSupport';
 import Logger from '../../utils/logger';
 import apiHooks from './hooks';
+import { AlertContext } from '../../utils/AlertContext';
 
 Formio.use(gds);
 
 const FormPage = ({ formId }) => {
   const { submitForm } = apiHooks();
+  const { setAlertContext } = useContext(AlertContext);
+  const formRef = useRef();
 
   const [keycloak] = useKeycloak();
   /* istanbul ignore next */
@@ -127,6 +131,7 @@ const FormPage = ({ formId }) => {
     !form.data ? null : (
       <Form
         form={form.data}
+        ref={formRef}
         onFormLoad={() => {
           const start = new Date();
           setTime({
@@ -143,6 +148,13 @@ const FormPage = ({ formId }) => {
           submitForm(submissionData, form, formId);
         }}
         onChange={setSubmissionData}
+        onError={(errors) => {
+          setAlertContext({
+            type: 'form-error',
+            errors,
+            form: formRef.current,
+          });
+        }}
         options={{
           breadcrumbSettings: {
             clickable: false,

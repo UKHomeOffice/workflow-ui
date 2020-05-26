@@ -57,6 +57,11 @@
         "success-message": "Your form was successfully submitted",
         "your-reference" : "Your reference is {{reference}}",
         "close" : "Close confirmation"
+      },
+      "error" : {
+        "form" : {
+          "title" : "There is a problem with your form"
+        }
       }
     },
     "forms": {

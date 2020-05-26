@@ -12,6 +12,7 @@
     "formiojs": "^4.9.27-rc.4",
     "govuk-colours": "^1.1.0",
     "govuk-frontend": "^3.6.0",
+    "html-react-parser": "^0.10.5",
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",
     "i18next-xhr-backend": "^3.2.2",
