@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PropType from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import config from 'react-global-configuration';
+import { ERROR_COLOUR } from 'govuk-colours';
 
 const ApiErrorAlert = ({
   errors,
@@ -34,7 +35,7 @@ const ApiErrorAlert = ({
       default:
         errorMessage = t('error.50x');
     }
-    return <li key={uuidv4()}><h4 style={{ color: '#d4351c' }} className="govuk-heading-s">{errorMessage}</h4></li>;
+    return <li key={uuidv4()}><h4 style={{ color: ERROR_COLOUR }} className="govuk-heading-s">{errorMessage}</h4></li>;
   };
 
   return (
