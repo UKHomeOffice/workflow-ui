@@ -155,7 +155,7 @@ describe('AlertBanner', () => {
       await form.update();
     });
 
-   await form.instance().createPromise;
+    await form.instance().createPromise;
     const TestComponent = () => {
       const { setAlertContext } = useContext(AlertContext);
 

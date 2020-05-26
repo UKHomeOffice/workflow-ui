@@ -146,13 +146,18 @@ const FormPage = ({ formId }) => {
       setAlertContext(null);
     } else {
       const errors = _.filter(alertContext.errors,
-        (error) => data.changed && (error.component.key !== data.changed.component.key)
-         && !data.changed.isValid);
-      setAlertContext({
-        type: 'form-error',
-        errors,
-        form: formRef.current,
-      });
+        (error) => data.changed
+            && (error.component.key !== data.changed.component.key));
+
+      if (errors.length === 0) {
+        setAlertContext(null);
+      } else {
+        setAlertContext({
+          type: 'form-error',
+          errors,
+          form: formRef.current,
+        });
+      }
     }
   };
 

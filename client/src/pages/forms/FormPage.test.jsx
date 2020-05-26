@@ -316,7 +316,7 @@ describe('FormPage', () => {
     });
 
     const form = wrapper.find(Form).at(0);
-    await form.instance().createPromise
+    await form.instance().createPromise;
     form.instance().props.onError([{
       component: {
         id: 'id',
@@ -330,5 +330,162 @@ describe('FormPage', () => {
     });
 
     expect(wrapper.find(FormErrorsAlert).exists()).toBe(true);
+  });
+
+  it('clears alert box if no more errors', async () => {
+    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+      .reply(200, {
+        key: 'formKey',
+      });
+
+    mockAxios.onGet('/form/name/formKey')
+      .reply(200, {
+        name: 'test',
+        display: 'form',
+        versionId: 'version',
+        title: 'title',
+        components: [
+          {
+            id: 'eoduazt',
+            key: 'textField1',
+            case: '',
+            mask: false,
+            tags: '',
+            type: 'textfield',
+            input: true,
+            label: 'Text Field',
+            logic: [],
+            hidden: false,
+            prefix: '',
+            suffix: '',
+            unique: false,
+            validate: {
+              json: '',
+              custom: '',
+              unique: false,
+              pattern: '',
+              multiple: false,
+              required: true,
+              maxLength: '',
+              minLength: '',
+              customMessage: '',
+              customPrivate: false,
+              strictDateValidation: false,
+            },
+            widget: {
+              type: 'input',
+            },
+          },
+          {
+            id: 'eoduazg',
+            key: 'textField2',
+            case: '',
+            mask: false,
+            tags: '',
+            type: 'textfield',
+            input: true,
+            label: 'Text Field',
+            logic: [],
+            hidden: false,
+            prefix: '',
+            suffix: '',
+            unique: false,
+            validate: {
+              json: '',
+              custom: '',
+              unique: false,
+              pattern: '',
+              multiple: false,
+              required: true,
+              maxLength: '',
+              minLength: '',
+              customMessage: '',
+              customPrivate: false,
+              strictDateValidation: false,
+            },
+            widget: {
+              type: 'input',
+            },
+          },
+          {
+            id: 'e23op57',
+            key: 'submit',
+            size: 'md',
+            type: 'button',
+            block: false,
+            input: true,
+            label: 'Submit',
+            theme: 'primary',
+            action: 'submit',
+            hidden: false,
+            prefix: '',
+            suffix: '',
+            unique: false,
+            widget: {
+              type: 'input',
+            },
+          }],
+      });
+    const wrapper = await mount(
+      <AlertContextProvider>
+        <AlertBanner />
+        <FormPage formId="id" />
+      </AlertContextProvider>,
+    );
+
+    await act(async () => {
+      await Promise.resolve(wrapper);
+      await new Promise((resolve) => setImmediate(resolve));
+      await wrapper.update();
+    });
+
+    const form = wrapper.find(Form).at(0);
+    await form.instance().createPromise;
+
+    form.instance().props.onError([{
+      component: {
+        id: 'eoduazt',
+        key: 'textField1',
+      },
+      message: 'Textfield is required',
+    },
+    {
+      component: {
+        id: 'eoduazg',
+        key: 'textField2',
+      },
+      message: 'Textfield is required',
+    }]);
+
+    await act(async () => {
+      await wrapper.update();
+    });
+
+    expect(wrapper.find(FormErrorsAlert).exists()).toBe(true);
+    form.instance().props.onChange({
+      changed: {
+        component: {
+          id: 'eoduazt',
+          key: 'textField1',
+        },
+        isValid: true,
+      },
+    });
+
+    expect(wrapper.find(FormErrorsAlert).exists()).toBe(true);
+
+    form.instance().props.onChange({
+      changed: {
+        component: {
+          id: 'eoduazg',
+          key: 'textField2',
+        },
+        isValid: true,
+      },
+    });
+    await act(async () => {
+      await wrapper.update();
+    });
+    expect(wrapper.find(FormErrorsAlert).exists()).toBe(false);
   });
 });
