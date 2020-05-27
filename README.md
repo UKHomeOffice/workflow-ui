@@ -1,5 +1,7 @@
 # Workflow Service UI
 
+![Workflow UI CI](https://github.com/DigitalPatterns/workflow-ui/workflows/Workflow%20UI%20CI/badge.svg)
+
 Provides a UI for completing forms and actioning tasks.
 
 # Server
