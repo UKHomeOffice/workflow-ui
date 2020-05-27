@@ -49,7 +49,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <div className="app-container" style={{ height: '100vh' }}>
+      <div className="app-container">
         <ErrorBoundary
           FallbackComponent={ErrorFallback}
           onError={(error, componentStack) => {
@@ -61,7 +61,7 @@ const Layout = ({ children }) => {
             });
           }}
         >
-          <main className="govuk-main-wrapper govuk-!-padding-top-3" role="main">
+          <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-!-padding-top-3" role="main">
             <AlertContextProvider>
               <AlertBanner />
               {route.url.pathname !== '/' ? (
@@ -81,9 +81,10 @@ const Layout = ({ children }) => {
             </AlertContextProvider>
           </main>
         </ErrorBoundary>
-      </div>
 
+      </div>
       <Footer />
+
     </>
   );
 };

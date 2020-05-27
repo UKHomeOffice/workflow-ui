@@ -79,8 +79,12 @@
       "title" : "Task"
     },
     "tasks": {
+      "title" : "Tasks",
       "list": {
-        "title" : "Tasks to complete"
+        "status": "Open",
+        "caption" : "Tasks",
+        "title" : "Tasks to complete",
+        "size" :  "{{count}} tasks assigned to you"
       }
     },
     "login" : {
