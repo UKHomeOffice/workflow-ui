@@ -29,7 +29,7 @@ const TaskList = ({ tasks }) => {
                 <strong
                   className="govuk-tag app-task-list__task-open"
                 >
-                  {t('pages.forms.list.status')}
+                  {t('pages.tasks.list.status')}
                 </strong>
               </li>
             ))}
