@@ -47,9 +47,32 @@ const TasksListPage = () => {
             },
           });
 
+          const processDefinitionIds = _.uniq(tasksResponse
+            .data.map((task) => task.processDefinitionId));
+
+          const definitionResponse = await axiosInstance({
+            method: 'GET',
+            url: '/camunda/engine-rest/process-definition',
+            params: {
+              processDefinitionIdIn: processDefinitionIds.toString(),
+            },
+          });
+
           if (isMounted.current) {
             const merged = _.values(_.merge(_.keyBy(dataRef.current, 'id'),
               _.keyBy(tasksResponse.data, 'id')));
+
+            if (definitionResponse.data && definitionResponse.data.length !== 0) {
+              merged.forEach((task) => {
+                const processDefinition = _.find(definitionResponse.data,
+                  (definition) => definition.id === task.processDefinitionId);
+                if (processDefinition) {
+                  // eslint-disable-next-line no-param-reassign
+                  task.category = processDefinition.category;
+                }
+              });
+            }
+
             dataRef.current = merged;
             setData({
               isLoading: false,
@@ -61,6 +84,7 @@ const TasksListPage = () => {
             });
           }
         } catch (e) {
+          console.error(e);
           setData({
             isLoading: false,
             tasks: dataRef.current,

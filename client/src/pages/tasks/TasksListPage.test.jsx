@@ -54,8 +54,16 @@ describe('TasksListPage', () => {
       mockData.push({
         id: `id${(Math.random() + Math.random())}`,
         name: `name${i}`,
+        processDefinitionId: 'processDefinitionId0',
       });
     }
+
+
+    mockAxios.onGet('/camunda/engine-rest/process-definition')
+      .reply(200, [{
+        category: 'test',
+        id: 'processDefinitionId0',
+      }]);
 
     mockAxios.onGet('/camunda/engine-rest/task')
       .reply(200, mockData);
@@ -74,6 +82,7 @@ describe('TasksListPage', () => {
     });
 
 
+
     expect(wrapper.find('a[id="loadMore"]').exists()).toBe(true);
 
     await act(async () => {
@@ -84,7 +93,7 @@ describe('TasksListPage', () => {
       await wrapper.update();
     });
 
-    expect(mockAxios.history.get.length).toBe(2);
+    expect(mockAxios.history.get.length).toBe(4);
     expect(mockAxios.history.post.length).toBe(2);
   });
 });
