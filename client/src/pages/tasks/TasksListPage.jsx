@@ -84,7 +84,6 @@ const TasksListPage = () => {
             });
           }
         } catch (e) {
-          console.error(e);
           setData({
             isLoading: false,
             tasks: dataRef.current,
