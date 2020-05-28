@@ -34,7 +34,7 @@ const TaskList = ({ tasks }) => {
                         href={`/task/${task.id}`}
                         onClick={async (e) => {
                           e.preventDefault();
-                          await navigation.navigate(`/task/${task.id}`);
+                          await navigation.navigate(`/tasks/${task.id}`);
                         }}
                         aria-describedby={task.name}
                       >

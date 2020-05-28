@@ -19,6 +19,6 @@ describe('TaskList', () => {
       preventDefault: () => {},
     });
 
-    expect(mockNavigate).toBeCalledWith('/task/id');
+    expect(mockNavigate).toBeCalledWith('/tasks/id');
   });
 });

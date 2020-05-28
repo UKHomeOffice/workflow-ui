@@ -82,7 +82,6 @@ describe('TasksListPage', () => {
     });
 
 
-
     expect(wrapper.find('a[id="loadMore"]').exists()).toBe(true);
 
     await act(async () => {
