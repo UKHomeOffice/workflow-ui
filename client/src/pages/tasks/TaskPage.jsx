@@ -6,7 +6,7 @@ import moment from 'moment';
 import { useKeycloak } from '@react-keycloak/web';
 import { useIsMounted, useAxios } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
-import determinePriority from '../../routes/priority';
+import determinePriority from '../../utils/priority';
 
 const TaskPage = ({ taskId }) => {
   const isMounted = useIsMounted();
@@ -107,6 +107,14 @@ const TaskPage = ({ taskId }) => {
           <span className="govuk-caption-m govuk-!-font-size-19">{t('pages.task.assignee')}</span>
           <h4 className="govuk-heading-m govuk-!-font-size-19">{assignee}</h4>
         </div>
+      </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full" id="description">
+          <p className="govuk-body-l">{task.data.task.description}</p>
+        </div>
+      </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full" id="form" />
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 package io.digitalpatterns.workflow.ui;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
@@ -12,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import static java.lang.String.format;
 
 @RestController
 @Slf4j
@@ -36,8 +39,9 @@ public class TaskController {
 
         ZuulProperties.ZuulRoute zuulRoute = zuulProperties.getRoutes().get("workflow-service");
 
+
         JSONObject taskDto = new JSONObject(restTemplate.exchange(
-               String.format("%s/camunda/engine-rest/task/%s", zuulRoute.getUrl(), taskId),
+               format("%s/camunda/engine-rest/task/%s", zuulRoute.getUrl(), taskId),
                HttpMethod.GET,
                new HttpEntity<>(httpHeaders),
                 String.class
@@ -45,7 +49,7 @@ public class TaskController {
 
 
         JSONObject processInstanceDto = new JSONObject(restTemplate.exchange(
-                String.format("%s/camunda/engine-rest/process-instance/%s", zuulRoute.getUrl(),
+                format("%s/camunda/engine-rest/process-instance/%s", zuulRoute.getUrl(),
                         taskDto.getString("processInstanceId")),
                 HttpMethod.GET,
                 new HttpEntity<>(httpHeaders),
@@ -53,7 +57,7 @@ public class TaskController {
         ).getBody());
 
         JSONObject processDefinitionDto = new JSONObject(restTemplate.exchange(
-                String.format("%s/camunda/engine-rest/process-definition/%s", zuulRoute.getUrl(),
+                format("%s/camunda/engine-rest/process-definition/%s", zuulRoute.getUrl(),
                         taskDto.getString("processDefinitionId")),
                 HttpMethod.GET,
                 new HttpEntity<>(httpHeaders),
@@ -61,15 +65,27 @@ public class TaskController {
         ).getBody());
 
         JSONObject variablesDto = new JSONObject(restTemplate.exchange(
-                String.format("%s/camunda/engine-rest/process-instance/%s/variables?deserializeValues=false", zuulRoute.getUrl(),
+                format("%s/camunda/engine-rest/process-instance/%s/variables?deserializeValues=false", zuulRoute.getUrl(),
                         taskDto.getString("processInstanceId")),
                 HttpMethod.GET,
                 new HttpEntity<>(httpHeaders),
                 String.class
         ).getBody());
 
-
         JSONObject response = new JSONObject();
+        String formKey = taskDto.getString("formKey");
+        if (StringUtils.isNotBlank(formKey)) {
+            ZuulProperties.ZuulRoute formRoute = zuulProperties.getRoutes().get("form-service");
+            JSONObject form = new JSONObject(restTemplate.exchange(
+                    format("%s/form/name/%s", formRoute.getUrl(),
+                            formKey),
+                    HttpMethod.GET,
+                    new HttpEntity<>(httpHeaders),
+                    String.class).getBody());
+
+            response.put("form", form);
+
+        }
         response.put("task", taskDto);
         response.put("processDefinition", processDefinitionDto);
         response.put("processInstance", processInstanceDto);
