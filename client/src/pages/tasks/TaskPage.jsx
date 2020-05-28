@@ -1,7 +1,116 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import moment from 'moment';
+import { useKeycloak } from '@react-keycloak/web';
+import { useIsMounted, useAxios } from '../../utils/hooks';
+import ApplicationSpinner from '../../components/ApplicationSpinner';
+import determinePriority from '../../routes/priority';
 
-const TaskPage = ({ taskId }) => <div>{taskId}</div>;
+const TaskPage = ({ taskId }) => {
+  const isMounted = useIsMounted();
+  const { t } = useTranslation();
+  const axiosInstance = useAxios();
+  const [keycloak] = useKeycloak();
+
+  const [task, setTask] = useState({
+    isLoading: true,
+    data: null,
+  });
+  useEffect(() => {
+    const source = axios.CancelToken.source();
+    const loadTask = async () => {
+      if (axiosInstance) {
+        try {
+          const taskDataResponse = await axiosInstance({
+            method: 'GET',
+            url: `/ui/tasks/${taskId}`,
+            cancelToken: source.token,
+          });
+          if (isMounted.current) {
+            setTask({
+              isLoading: false,
+              data: taskDataResponse.data,
+            });
+          }
+        } catch (e) {
+          if (isMounted.current) {
+            setTask({
+              isLoading: false,
+              data: null,
+            });
+          }
+        }
+      }
+    };
+    loadTask().then(() => {});
+    return () => {
+      source.cancel('Cancelling request');
+    };
+  }, [axiosInstance, setTask, isMounted]);
+
+
+  if (task.isLoading) {
+    return <ApplicationSpinner />;
+  }
+
+  if (!task.data) {
+    return null;
+  }
+  const { tokenParsed } = keycloak;
+
+  let assignee = t('pages.task.current-assignee');
+  const taskAssignee = task.data.task.assignee;
+
+  if (!taskAssignee) {
+    assignee = t('pages.task.unassigned');
+  } else if (
+    taskAssignee
+      && taskAssignee !== tokenParsed.email
+  ) {
+    assignee = tokenParsed.email;
+  }
+
+  return (
+    <>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full" id="taskName">
+          <span className="govuk-caption-l">
+            {task.data.processInstance.businessKey}
+          </span>
+          <h2 className="govuk-heading-l">
+            {task.data.task.name}
+          </h2>
+        </div>
+      </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-one-quarter" id="category">
+          <span className="govuk-caption-m govuk-!-font-size-19">{t('pages.task.category')}</span>
+          <h4 className="govuk-heading-m govuk-!-font-size-19">
+            {task.data.processDefinition.category}
+          </h4>
+        </div>
+        <div className="govuk-grid-column-one-quarter" id="taskDueDate">
+          <span className="govuk-caption-m govuk-!-font-size-19">{t('pages.task.due')}</span>
+          <h4 className="govuk-heading-m govuk-!-font-size-19">
+            { moment().to(moment(task.data.task.due)) }
+          </h4>
+        </div>
+        <div className="govuk-grid-column-one-quarter" id="taskPriority">
+          <span className="govuk-caption-m govuk-!-font-size-19">{t('pages.task.priority')}</span>
+          <h4 className="govuk-heading-m govuk-!-font-size-19">
+            { determinePriority(task.data.task.priority)}
+          </h4>
+        </div>
+        <div className="govuk-grid-column-one-quarter" id="taskAssignee">
+          <span className="govuk-caption-m govuk-!-font-size-19">{t('pages.task.assignee')}</span>
+          <h4 className="govuk-heading-m govuk-!-font-size-19">{assignee}</h4>
+        </div>
+      </div>
+    </>
+  );
+};
 
 
 TaskPage.propTypes = {

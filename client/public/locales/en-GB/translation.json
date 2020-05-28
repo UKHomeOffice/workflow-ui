@@ -76,7 +76,13 @@
       }
     },
     "task": {
-      "title" : "Task"
+      "title" : "Task",
+      "category" : "Category",
+      "due": "Due",
+      "priority" : "Priority",
+      "assignee" : "Assignee",
+      "current-assignee" : "You are the current assignee",
+      "unassigned" : "Unassigned"
     },
     "tasks": {
       "title" : "Tasks",

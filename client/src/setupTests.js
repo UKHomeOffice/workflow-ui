@@ -37,6 +37,7 @@ jest.mock('@react-keycloak/web', () => ({
       tokenParsed: {
         given_name: 'test',
         family_name: 'test',
+        email: 'test',
       },
       logout: mockLogout,
     },
