@@ -72,7 +72,6 @@ const TaskPage = ({ taskId }) => {
             });
           }
         } catch (e) {
-          console.log(e);
           if (isMounted.current) {
             setTask({
               isLoading: false,

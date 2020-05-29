@@ -9,6 +9,13 @@ jest.mock('./logger', () => ({
   error: jest.fn(),
 }));
 
+jest.mock('react', () => {
+  const ActualReact = require.requireActual('react');
+  return {
+    ...ActualReact,
+    useContext: () => ({ setAlertContext: jest.fn() }),
+  };
+});
 
 describe('axios hooks', () => {
   const mockAxios = new MockAdapter(axios);

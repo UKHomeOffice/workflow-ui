@@ -14,7 +14,7 @@ export const useAxios = () => {
   const { setAlertContext } = useContext(AlertContext);
 
   const routeRef = useRef(useCurrentRoute());
-
+  const setAlertRef = useRef(setAlertContext);
   useEffect(() => {
     const instance = axios.create({
       baseURL: '/',
@@ -30,7 +30,7 @@ export const useAxios = () => {
         path: routeRef.current.url.pathname,
       });
 
-      setAlertContext({
+      setAlertRef.current({
         type: 'api-error',
         errors: [{
           status: error.response.status,
@@ -47,7 +47,7 @@ export const useAxios = () => {
     return () => {
       setAxiosInstance({});
     };
-  }, [initialized, keycloak.token, setAlertContext]);
+  }, [initialized, keycloak.token]);
 
   return axiosInstance.instance;
 };
