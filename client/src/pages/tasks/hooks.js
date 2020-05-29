@@ -11,23 +11,25 @@ export default () => {
   const { setAlertContext } = useContext(AlertContext);
   const navigation = useNavigation();
 
-  const submitForm = useCallback((submission, formInfo, id) => {
-    if (formInfo) {
+  const submitForm = useCallback(({
+    submission, form, taskId, businessKey,
+  }) => {
+    if (form) {
       const variables = {
-        [formInfo.name]: {
+        [form.name]: {
           value: JSON.stringify(submission.data),
           type: 'json',
         },
       };
-      axiosInstance.post(`/camunda/engine-rest/process-definition/${id}/submit-form`, {
+      axiosInstance.post(`/camunda/engine-rest/task/${taskId}/submit-form`, {
         variables,
-        businessKey: submission.data.businessKey,
+        businessKey,
       }).then(async () => {
         setAlertContext({
           type: 'form-submission',
           status: 'successful',
-          message: t('pages.form.submission.success-message'),
-          reference: `${submission.data.businessKey}`,
+          message: t('pages.task.submission.success-message'),
+          reference: `${businessKey}`,
         });
         await navigation.navigate('/');
       });

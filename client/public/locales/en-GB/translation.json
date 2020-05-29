@@ -76,6 +76,9 @@
       }
     },
     "task": {
+      "submission": {
+        "success-message" : "You have successfully completed the task"
+      },
       "title" : "Task",
       "category" : "Category",
       "due": "Due",

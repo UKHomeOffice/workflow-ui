@@ -73,7 +73,7 @@ public class TaskController {
         ).getBody());
 
         JSONObject response = new JSONObject();
-        String formKey = taskDto.getString("formKey");
+        String formKey = !taskDto.isNull("formKey") ? taskDto.getString("formKey") : null;
         if (StringUtils.isNotBlank(formKey)) {
             ZuulProperties.ZuulRoute formRoute = zuulProperties.getRoutes().get("form-service");
             JSONObject form = new JSONObject(restTemplate.exchange(
