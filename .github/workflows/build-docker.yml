@@ -34,7 +34,7 @@ jobs:
       - name: Run tests
         run: ./gradlew clean test
       - name: Run build
-        run: ./gradlew clean build
+        run: ./gradlew clean assemble
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag ${{ env.IMAGE }}:latest
       - uses: anchore/scan-action@master

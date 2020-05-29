@@ -2,7 +2,7 @@ FROM digitalpatterns/jre:latest
 
 WORKDIR /app
 
-ADD ./build/libs/workflow-ui.jar /app/
+ADD ./server/build/libs/workflow-ui.jar /app/
 
 USER java
 
