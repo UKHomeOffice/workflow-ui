@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import config from 'react-global-configuration';
 import Keycloak from 'keycloak-js';
 import { KeycloakProvider, useKeycloak } from '@react-keycloak/web';
+import { initAll } from 'govuk-frontend';
 import Layout from './components/layout';
 import routes from './routes';
 import ApplicationSpinner from './components/ApplicationSpinner';
@@ -33,6 +34,7 @@ const RouterView = () => {
   if (!initialized) {
     return <ApplicationSpinner translationKey="keycloak.initialising" />;
   }
+  initAll();
   return (
     <Router hashScrollBehavior="smooth" routes={routes} context={{ t, isAuthenticated: keycloak.authenticated }}>
       <Layout>

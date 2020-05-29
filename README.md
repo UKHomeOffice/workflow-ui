@@ -58,3 +58,14 @@ npm run start
 
 This will use the reverse proxy defined in the package.json.  
 
+
+# Assemble
+
+To produce the final artefact, run the following from the root of the project
+
+```bash
+./gradlew clean assemble
+```
+
+This will first clean and build the client code and then copy the build directory into the static directory of the server. Giving you a final output of
+workflow-ui.jar which is a spring boot app.
