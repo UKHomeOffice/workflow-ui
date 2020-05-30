@@ -16,7 +16,7 @@ instance
     react: {
       wait: true,
     },
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false,
     },

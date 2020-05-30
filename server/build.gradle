@@ -100,5 +100,6 @@ bootJar {
         into 'static'
     }
 }
+
 jar.dependsOn(':client:assemble')
 
