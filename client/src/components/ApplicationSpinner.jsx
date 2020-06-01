@@ -24,13 +24,16 @@ const ApplicationSpinner = ({ translationKey, args }) => {
 
 
 const SpinnerContainer = styled.div`
-  position: absolute;
+position: fixed;
   top: 50%;
   left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   transform: translate(-50%, -50%);
 `;
 const Spinner = styled.div`
-
+ text-align: center;
   border: 12px solid #DEE0E2;
   border-radius: 50%;
   border-top-color: #005EA5;
