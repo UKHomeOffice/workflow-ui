@@ -32,18 +32,26 @@ const TasksListPage = () => {
             url: '/camunda/engine-rest/task/count',
             cancelToken: source.token,
             data: {
-              assignee: keycloak.tokenParsed.email,
+              orQueries: [{
+                candidateGroups: keycloak.tokenParsed.groups,
+                assignee: keycloak.tokenParsed.email,
+              }],
             },
           });
 
           const tasksResponse = await axiosInstance({
-            method: 'GET',
+            method: 'POST',
             url: '/camunda/engine-rest/task',
             cancelToken: source.token,
             params: {
               maxResults: data.maxResults,
               firstResult: data.page,
-              assignee: keycloak.tokenParsed.email,
+            },
+            data: {
+              orQueries: [{
+                candidateGroups: keycloak.tokenParsed.groups,
+                assignee: keycloak.tokenParsed.email,
+              }],
             },
           });
 
@@ -101,7 +109,7 @@ const TasksListPage = () => {
       source.cancel('Cancelling request');
     };
   }, [setData, axiosInstance, data.maxResults,
-    data.page, keycloak.tokenParsed.email, isMounted, data.search]);
+    data.page, keycloak.tokenParsed.email, keycloak.tokenParsed.groups, isMounted, data.search]);
 
   if (data.isLoading) {
     return <ApplicationSpinner />;

@@ -65,7 +65,7 @@ describe('TasksListPage', () => {
         id: 'processDefinitionId0',
       }]);
 
-    mockAxios.onGet('/camunda/engine-rest/task')
+    mockAxios.onPost('/camunda/engine-rest/task')
       .reply(200, mockData);
 
     mockAxios.onPost('/camunda/engine-rest/task/count')
@@ -92,7 +92,7 @@ describe('TasksListPage', () => {
       await wrapper.update();
     });
 
-    expect(mockAxios.history.get.length).toBe(4);
-    expect(mockAxios.history.post.length).toBe(2);
+    expect(mockAxios.history.get.length).toBe(2);
+    expect(mockAxios.history.post.length).toBe(4);
   });
 });

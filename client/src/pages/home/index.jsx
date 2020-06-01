@@ -56,7 +56,10 @@ const Home = () => {
         url: '/camunda/engine-rest/task/count',
         cancelToken: source.token,
         data: {
-          assignee: keycloak.tokenParsed.email,
+          orQueries: [{
+            candidateGroups: keycloak.tokenParsed.groups,
+            assignee: keycloak.tokenParsed.email,
+          }],
         },
       }).then((response) => {
         if (isMounted.current) {
@@ -78,7 +81,9 @@ const Home = () => {
     return () => {
       source.cancel('Cancelling request');
     };
-  }, [axiosInstance, setFormsCount, setTasksCount, isMounted, keycloak.tokenParsed.email]);
+  }, [axiosInstance, setFormsCount, setTasksCount, isMounted,
+    keycloak.tokenParsed.groups,
+    keycloak.tokenParsed.email]);
 
 
   return (
