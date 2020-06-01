@@ -24,6 +24,8 @@ const DisplayForm = ({
 
   const [keycloak] = useKeycloak();
   /* istanbul ignore next */
+  Formio.baseUrl = '';
+  Formio.projectUrl = '';
   Formio.plugins = [
     augmentRequest(keycloak, form.id),
   ];
