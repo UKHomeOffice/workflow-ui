@@ -61,7 +61,11 @@ const Layout = ({ children }) => {
             });
           }}
         >
-          <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-!-padding-top-3" role="main">
+          <main
+            className="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-!-padding-top-3"
+            role="main"
+            id="main-content"
+          >
             <AlertContextProvider>
               <AlertBanner />
               {route.url.pathname !== '/' ? (

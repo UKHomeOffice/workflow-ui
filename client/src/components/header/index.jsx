@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from 'react-navi';
 import styled from 'styled-components';
 import config from 'react-global-configuration';
+import SkipLink from '../SkipLink';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -10,6 +11,7 @@ const Header = () => {
   return (
     <>
       <header className="govuk-header" role="banner" data-module="govuk-header">
+        <SkipLink />
         <div className="govuk-header__container govuk-width-container">
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-one-half">
