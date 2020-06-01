@@ -20,7 +20,7 @@ zuul:
     refdata-service:
       path: /refdata/**
       strip-prefix: true
-      url: ${refData.url:http://localhost:3001}
+      url: ${refData.url:http://localhost:9002}
     form-service:
       path: /form/**
       strip-prefix: false
