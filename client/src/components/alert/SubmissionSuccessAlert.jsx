@@ -11,12 +11,14 @@ const SubmissionSuccessAlert = ({ message, reference, handleOnClose }) => {
           <h2 className="govuk-panel__title">
             {message}
           </h2>
-          <div className="govuk-panel__body">
-            <strong>
-              {t('pages.form.submission.your-reference',
-                { reference })}
-            </strong>
-          </div>
+          {reference ? (
+            <div className="govuk-panel__body">
+              <strong>
+                {t('pages.form.submission.your-reference',
+                  { reference })}
+              </strong>
+            </div>
+          ) : null }
           <div className="govuk-!-margin-top-5">
             <button
               type="button"
