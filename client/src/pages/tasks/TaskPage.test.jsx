@@ -188,4 +188,60 @@ describe('TaskPage', () => {
 
     expect(mockNavigate).toBeCalledWith('/');
   });
+
+  it('adds complete button if form is not present', async () => {
+    mockAxios.onGet('/ui/tasks/taskId')
+      .reply(200, {
+        form: null,
+        task: {
+          id: 'taskId',
+          name: 'task name',
+          due: moment(),
+          priority: '1000',
+          assignee: 'apples',
+        },
+        variables: {
+          email: 'test',
+          test: {
+            type: 'Json',
+            value: JSON.stringify({ data: { text: 'test' } }),
+          },
+          submissionData: {
+            type: 'Json',
+            value: JSON.stringify({ data: { text: 'test' } }),
+          },
+        },
+        processDefinition: {
+          category: 'test',
+        },
+        processInstance: {
+          businessKey: 'BUSINESS KEY',
+        },
+      });
+
+    mockAxios.onPost('/camunda/engine-rest/task/taskId/submit-form')
+      .reply(200, {});
+
+    const wrapper = await mount(<AlertContextProvider><TaskPage taskId="taskId" /></AlertContextProvider>);
+
+    await act(async () => {
+      await Promise.resolve(wrapper);
+      await new Promise((resolve) => setImmediate(resolve));
+      await wrapper.update();
+    });
+
+    expect(wrapper.find(ApplicationSpinner).exists()).toBe(false);
+
+    const completeButton = wrapper.find('button').at(0);
+
+    expect(completeButton.exists()).toBe(true);
+
+
+    await act(async () => {
+      await completeButton.simulate('click');
+      await wrapper.update();
+    });
+
+    expect(mockNavigate).toBeCalledWith('/');
+  });
 });

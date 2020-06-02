@@ -75,15 +75,19 @@ public class TaskController {
         JSONObject response = new JSONObject();
         String formKey = !taskDto.isNull("formKey") ? taskDto.getString("formKey") : null;
         if (StringUtils.isNotBlank(formKey)) {
-            ZuulProperties.ZuulRoute formRoute = zuulProperties.getRoutes().get("form-service");
-            JSONObject form = new JSONObject(restTemplate.exchange(
-                    format("%s/form/name/%s", formRoute.getUrl(),
-                            formKey),
-                    HttpMethod.GET,
-                    new HttpEntity<>(httpHeaders),
-                    String.class).getBody());
+            try {
+                ZuulProperties.ZuulRoute formRoute = zuulProperties.getRoutes().get("form-service");
+                JSONObject form = new JSONObject(restTemplate.exchange(
+                        format("%s/form/name/%s", formRoute.getUrl(),
+                                formKey),
+                        HttpMethod.GET,
+                        new HttpEntity<>(httpHeaders),
+                        String.class).getBody());
 
-            response.put("form", form);
+                response.put("form", form);
+            } catch (Exception e) {
+                log.error("Failed to load form '{}'", e.getMessage());
+            }
 
         }
         response.put("task", taskDto);

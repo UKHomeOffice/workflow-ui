@@ -186,7 +186,24 @@ const TaskPage = ({ taskId }) => {
               />
             </div>
           </div>
-        ) : null}
+        ) : (
+          <button
+            className="govuk-button"
+            type="button"
+            onClick={() => {
+              submitForm({
+                submission: {},
+                form: {
+                  name: 'no-form',
+                },
+                taskId,
+                businessKey: processInstance.businessKey,
+              });
+            }}
+          >
+            {t('pages.task.actions.complete')}
+          </button>
+        ) }
     </>
   );
 };

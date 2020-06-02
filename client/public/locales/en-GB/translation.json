@@ -79,6 +79,9 @@
       "submission": {
         "success-message" : "You have successfully completed the task"
       },
+      "actions" : {
+        "complete" : "Complete"
+      },
       "title" : "Task",
       "category" : "Category",
       "due": "Due",
