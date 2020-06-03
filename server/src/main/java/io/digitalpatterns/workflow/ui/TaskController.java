@@ -48,9 +48,12 @@ public class TaskController {
         ).getBody());
 
 
+        String processInstanceId = taskDto.getString("processInstanceId");
+        String processDefinitionId = taskDto.getString("processDefinitionId");
+
         JSONObject processInstanceDto = new JSONObject(restTemplate.exchange(
                 format("%s/camunda/engine-rest/process-instance/%s", zuulRoute.getUrl(),
-                        taskDto.getString("processInstanceId")),
+                        processInstanceId),
                 HttpMethod.GET,
                 new HttpEntity<>(httpHeaders),
                 String.class
@@ -58,7 +61,7 @@ public class TaskController {
 
         JSONObject processDefinitionDto = new JSONObject(restTemplate.exchange(
                 format("%s/camunda/engine-rest/process-definition/%s", zuulRoute.getUrl(),
-                        taskDto.getString("processDefinitionId")),
+                        processDefinitionId),
                 HttpMethod.GET,
                 new HttpEntity<>(httpHeaders),
                 String.class
@@ -66,7 +69,7 @@ public class TaskController {
 
         JSONObject variablesDto = new JSONObject(restTemplate.exchange(
                 format("%s/camunda/engine-rest/process-instance/%s/variables?deserializeValues=false", zuulRoute.getUrl(),
-                        taskDto.getString("processInstanceId")),
+                        processInstanceId),
                 HttpMethod.GET,
                 new HttpEntity<>(httpHeaders),
                 String.class
@@ -91,6 +94,7 @@ public class TaskController {
 
         }
         response.put("task", taskDto);
+
         response.put("processDefinition", processDefinitionDto);
         response.put("processInstance", processInstanceDto);
         response.put("variables", variablesDto);
