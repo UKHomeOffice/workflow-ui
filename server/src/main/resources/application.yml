@@ -31,3 +31,8 @@ zuul:
       url: ${workflowService.url:http://localhost:8000}
   sensitive-headers: Cookie,Set-Cookie
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, prometheus, metrics"
