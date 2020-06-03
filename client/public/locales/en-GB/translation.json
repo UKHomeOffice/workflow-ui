@@ -2,6 +2,7 @@
   "keycloak" : {
     "initialising" : "Initialising single sign on"
   },
+  "warning" : "Warning",
   "back" : "Back",
   "loading": "Loading...",
   "error" : {
@@ -82,6 +83,7 @@
       "actions" : {
         "complete" : "Complete"
       },
+      "no-form" : "There is no form associated with this task",
       "title" : "Task",
       "category" : "Category",
       "due": "Due",

@@ -71,3 +71,14 @@ jest.mock('react-i18next', () => ({
 config.set({
   serviceUrl: 'bar',
 }, { freeze: false });
+
+
+global.MutationObserver = class {
+  // eslint-disable-next-line no-useless-constructor,no-unused-vars,no-empty-function
+  constructor(callback) {}
+
+  disconnect = jest.fn();
+
+  // eslint-disable-next-line no-unused-vars
+  observe = jest.fn((target, options) => {});
+};
