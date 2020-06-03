@@ -12,7 +12,7 @@ export default class HTML5DetailsObserver {
           new Details(element).init();
         });
     });
-    this.observer.observe(this.node, { childList: true, attributes: false});
+    this.observer.observe(this.node, { childList: true, attributes: false });
     return this;
   }
 
