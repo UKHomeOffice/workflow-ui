@@ -10,6 +10,7 @@ import gds from '@digitalpatterns/formio-gds-template';
 import { AlertContext } from '../../utils/AlertContext';
 import { augmentRequest, interpolate } from '../../utils/formioSupport';
 import Logger from '../../utils/logger';
+import HTML5DetailsObserver from '../../utils/HTML5DetailsObserver';
 
 Formio.use(gds);
 
@@ -19,6 +20,7 @@ const DisplayForm = ({
 }) => {
   const { alertContext, setAlertContext } = useContext(AlertContext);
   const [submissionData, setSubmissionData] = useState(null);
+  let html5DetailsObserver;
 
   const formRef = useRef();
 
@@ -35,6 +37,12 @@ const DisplayForm = ({
     end: null,
     submitted: false,
   });
+
+  useEffect(() => () => {
+    if (html5DetailsObserver) {
+      html5DetailsObserver.destroy();
+    }
+  }, [html5DetailsObserver]);
 
   useEffect(() => {
     if ((form && form.name) && time.end) {
@@ -106,6 +114,9 @@ const DisplayForm = ({
       ref={formRef}
       onFormLoad={() => {
         const start = new Date();
+        if (formRef.current && !html5DetailsObserver) {
+          html5DetailsObserver = new HTML5DetailsObserver(formRef.current.element).create();
+        }
         setTime({
           ...time,
           start,
