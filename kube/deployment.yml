@@ -1,0 +1,118 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.WORKFLOW_UI_NAME}}
+spec:
+  selector:
+    matchLabels:
+      name: {{.WORKFLOW_UI_NAME}}
+  replicas: 3
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        name: {{.WORKFLOW_UI_NAME}}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: {{.WORKFLOW_UI_NAME}}-proxy
+        image: {{.NGINX_IMAGE}}:{{.NGINX_TAG}}
+        imagePullPolicy: Always
+        securityContext:
+          runAsNonRoot: true
+          capabilities:
+            drop:
+             - SETUID
+             - SETGID
+        resources:
+         limits:
+          memory: "100Mi"
+          cpu: "100m"
+         requests:
+          memory: "50Mi"
+          cpu: "100m"
+        env:
+        - name: PROXY_SERVICE_HOST
+          value: 'http://127.0.0.1'
+        - name: PROXY_SERVICE_PORT
+          value: "8080"
+        - name: SERVER_CERT
+          value: "/certs/tls.crt"
+        - name: SERVER_KEY
+          value: "/certs/tls.key"
+        - name: LOG_FORMAT_NAME
+          value: 'json'
+        - name: ENABLE_UUID_PARAM
+          value: "FALSE"
+        - name: NAXSI_USE_DEFAULT_RULES
+          value: "FALSE"
+        - name: PORT_IN_HOST_HEADER
+          value: "FALSE"
+        - name: ERROR_REDIRECT_CODES
+          value: "599"
+        - name: STATSD_METRICS
+          value: "FALSE"
+        ports:
+        - name: https
+          containerPort: 10443
+        volumeMounts:
+          - name: certs
+            mountPath: /certs
+            readOnly: true
+      - name: {{.WORKFLOW_UI_NAME}}
+        image: {{.WORKFLOW_UI_IMAGE}}:{{.WORKFLOW_UI_TAG}}
+        imagePullPolicy: Always
+        securityContext:
+          runAsNonRoot: true
+        resources:
+          requests:
+            memory: "6144Mi"
+            cpu: "4000m"
+          limits:
+            memory: "6144Mi"
+            cpu: "4000m"
+        ports:
+          - name: http
+            containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        volumeMounts:
+          - name: certs
+            mountPath: /certs
+            readOnly: true
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "{{.SPRING_PROFILES_ACTIVE}}"
+          - name: AWS_REGION
+            value: "{{.AWS_REGION}}"
+          - name: AWS_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{.WORKFLOW_UI_NAME}}
+                key: awsAccessKeyId
+          - name: AWS_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{.WORKFLOW_UI_NAME}}
+                key: awsSecretAccessKey
+          - name: AWS_SECRETS_MANAGER_ENABLED
+            value: "{{.AWS_SECRETS_MANAGER_ENABLED}}"
+      volumes:
+      - name: certs
+        secret:
+          secretName: "{{.WORKFLOW_UI_NAME}}-pod-cmio"
