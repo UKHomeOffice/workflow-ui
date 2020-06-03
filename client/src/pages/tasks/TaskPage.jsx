@@ -152,7 +152,7 @@ const TaskPage = ({ taskId }) => {
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full" id="description">
-          <p className="govuk-body-l">{taskInfo.description}</p>
+          <p className="govuk-body">{taskInfo.description}</p>
         </div>
       </div>
       {form
@@ -187,22 +187,40 @@ const TaskPage = ({ taskId }) => {
             </div>
           </div>
         ) : (
-          <button
-            className="govuk-button"
-            type="button"
-            onClick={() => {
-              submitForm({
-                submission: {},
-                form: {
-                  name: 'no-form',
-                },
-                taskId,
-                businessKey: processInstance.businessKey,
-              });
-            }}
-          >
-            {t('pages.task.actions.complete')}
-          </button>
+          <>
+            <div className="govuk-grid-row">
+              <div className="govuk-grid-column-full">
+                <div className="govuk-warning-text">
+                  <span className="govuk-warning-text__icon" aria-hidden="true">!</span>
+                  <strong className="govuk-warning-text__text">
+                    <span className="govuk-warning-text__assistive">{t('warning')}</span>
+                    {t('pages.task.no-form')}
+                  </strong>
+                </div>
+              </div>
+            </div>
+            <div className="govuk-grid-row">
+              <div className="govuk-grid-column-full">
+                <button
+                  className="govuk-button"
+                  type="button"
+                  onClick={() => {
+                    submitForm({
+                      submission: {},
+                      form: {
+                        name: 'no-form',
+                      },
+                      taskId,
+                      businessKey: processInstance.businessKey,
+                    });
+                  }}
+                >
+                  {t('pages.task.actions.complete')}
+                </button>
+              </div>
+            </div>
+          </>
+
         ) }
     </>
   );
