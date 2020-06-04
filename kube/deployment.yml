@@ -38,7 +38,7 @@ spec:
         - name: PROXY_SERVICE_HOST
           value: 'http://127.0.0.1'
         - name: PROXY_SERVICE_PORT
-          value: "8080"
+          value: "8000"
         - name: SERVER_CERT
           value: "/certs/tls.crt"
         - name: SERVER_KEY
@@ -76,25 +76,21 @@ spec:
             cpu: "4000m"
         ports:
           - name: http
-            containerPort: 8080
+            containerPort: 8000
         readinessProbe:
           httpGet:
-            path: /
-            port: 8080
+            path: /actuator/health
+            port: 8000
             scheme: HTTP
           initialDelaySeconds: 30
           periodSeconds: 20
         livenessProbe:
           httpGet:
-            path: /
-            port: 8080
+            path: /actuator/info
+            port: 8000
             scheme: HTTP
           initialDelaySeconds: 30
           periodSeconds: 20
-        volumeMounts:
-          - name: certs
-            mountPath: /certs
-            readOnly: true
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: "{{.SPRING_PROFILES_ACTIVE}}"
