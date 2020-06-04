@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useNavigation } from 'react-navi';
-
+import FormioUtils from 'formiojs/utils';
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
 import apiHooks from './hooks';
@@ -15,6 +15,7 @@ const FormPage = ({ formId }) => {
   const { submitForm } = apiHooks();
   const isMounted = useIsMounted();
   const navigation = useNavigation();
+  const [submitting, setSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     isLoading: true,
@@ -64,24 +65,35 @@ const FormPage = ({ formId }) => {
     return () => {
       source.cancel('cancelling request');
     };
-  }, [axiosInstance, formId, setForm, isMounted]);
+  }, [axiosInstance, formId, setForm, isMounted, setSubmitting]);
 
   if (form.isLoading) {
     return <ApplicationSpinner />;
   }
 
+  if (!form.data) {
+    return null;
+  }
+  const businessKeyComponent = FormioUtils.getComponent(form.data.components, 'businessKey');
+
   return (
-    !form.data ? null : (
-      <DisplayForm
-        handleOnCancel={async () => {
-          await navigation.navigate('/forms');
-        }}
-        form={form.data}
-        handleOnSubmit={(data) => {
-          submitForm(data, form.data, formId);
-        }}
-      />
-    )
+    <DisplayForm
+      submitting={submitting}
+      handleOnCancel={async () => {
+        await navigation.navigate('/forms');
+      }}
+      interpolateContext={
+        {
+          businessKey: businessKeyComponent ? businessKeyComponent.defaultValue : null,
+        }
+      }
+      form={form.data}
+      handleOnSubmit={(data) => {
+        submitForm(data, form.data, formId, () => {
+          setSubmitting(false);
+        });
+      }}
+    />
   );
 };
 

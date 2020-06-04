@@ -5,6 +5,7 @@
   "warning" : "Warning",
   "back" : "Back",
   "loading": "Loading...",
+  "submitting" : "Submitting your form....",
   "error" : {
     "details": "Error details",
     "title" : "We are experiencing technical problems",
