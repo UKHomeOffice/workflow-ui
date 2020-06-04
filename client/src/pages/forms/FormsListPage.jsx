@@ -160,7 +160,7 @@ const FormsListPage = () => {
                   })
                 }
                 {
-                  forms.total > forms.maxResults && forms.data.length < (forms.total )
+                  forms.total > forms.maxResults && forms.data.length < (forms.total)
                     ? (
                       <li>
                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -168,7 +168,7 @@ const FormsListPage = () => {
                           id="loadMore"
                           onClick={async (e) => {
                             e.preventDefault();
-                            const page = forms.page + forms.maxResults
+                            const page = forms.page + forms.maxResults;
                             setForms({
                               ...forms,
                               page,

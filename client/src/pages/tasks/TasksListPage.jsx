@@ -128,7 +128,7 @@ const TasksListPage = () => {
         <div className="govuk-grid-column-full">
           <TaskList tasks={data.tasks} />
           {
-            data.total > data.maxResults && data.tasks.length < (data.total )
+            data.total > data.maxResults && data.tasks.length < (data.total)
               ? (
                 <ul className="govuk-list">
                   <li>

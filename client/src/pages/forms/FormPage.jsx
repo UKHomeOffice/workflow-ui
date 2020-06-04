@@ -89,6 +89,7 @@ const FormPage = ({ formId }) => {
       }
       form={form.data}
       handleOnSubmit={(data) => {
+        setSubmitting(true);
         submitForm(data, form.data, formId, () => {
           setSubmitting(false);
         });
