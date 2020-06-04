@@ -128,7 +128,7 @@ const TasksListPage = () => {
         <div className="govuk-grid-column-full">
           <TaskList tasks={data.tasks} />
           {
-            data.total > data.maxResults && data.tasks.length < (data.total - 1)
+            data.total > data.maxResults && data.tasks.length < (data.total)
               ? (
                 <ul className="govuk-list">
                   <li>
@@ -136,15 +136,14 @@ const TasksListPage = () => {
                       id="loadMore"
                       onClick={async (e) => {
                         e.preventDefault();
-                        const page = data.page === 0
-                          ? (data.page + 1) + data.maxResults : data.page + data.maxResults;
+                        const page = data.page + data.maxResults;
                         setData({
                           ...data,
                           page,
                         });
                       }}
                       className="govuk-link"
-                      href={`/tasks?firstResult=${(data.page + 1) + data.maxResults}&maxResults=${data.maxResults}`}
+                      href={`/tasks?firstResult=${data.page + data.maxResults}&maxResults=${data.maxResults}`}
                     >
                       {t('pages.forms.list.load-more')}
                     </a>

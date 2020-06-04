@@ -3,8 +3,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { BLACK } from 'govuk-colours';
 
-const ApplicationSpinner = ({ translationKey, args }) => {
+const ApplicationSpinner = ({ translationKey, args, colour }) => {
   const { t } = useTranslation();
   return (
     <>
@@ -13,7 +14,9 @@ const ApplicationSpinner = ({ translationKey, args }) => {
           <div className="govuk-grid-column-full">
             <SpinnerContainer>
               <Spinner />
-              <SpinnerText>{args ? t(translationKey, args) : t(translationKey)}</SpinnerText>
+              <SpinnerText colour={colour}>
+                {args ? t(translationKey, args) : t(translationKey)}
+              </SpinnerText>
             </SpinnerContainer>
           </div>
         </div>
@@ -54,15 +57,18 @@ const Spinner = styled.div`
 const SpinnerText = styled.div`
   line-height: 2;
   text-align: center;
+  color: ${(props) => (props.colour ? props.colour : BLACK)}
 `;
 
 ApplicationSpinner.defaultProps = {
   translationKey: 'loading',
   args: null,
+  colour: BLACK,
 };
 ApplicationSpinner.propTypes = {
   translationKey: PropTypes.string,
   args: PropTypes.shape({ root: PropTypes.object }),
+  colour: PropTypes.string,
 };
 
 export default ApplicationSpinner;

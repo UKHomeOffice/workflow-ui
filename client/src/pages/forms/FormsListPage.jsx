@@ -160,7 +160,7 @@ const FormsListPage = () => {
                   })
                 }
                 {
-                  forms.total > forms.maxResults && forms.data.length < (forms.total - 1)
+                  forms.total > forms.maxResults && forms.data.length < (forms.total)
                     ? (
                       <li>
                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -168,15 +168,14 @@ const FormsListPage = () => {
                           id="loadMore"
                           onClick={async (e) => {
                             e.preventDefault();
-                            const page = forms.page === 0
-                              ? (forms.page + 1) + forms.maxResults : forms.page + forms.maxResults;
+                            const page = forms.page + forms.maxResults;
                             setForms({
                               ...forms,
                               page,
                             });
                           }}
                           className="govuk-link"
-                          href="#"
+                          href={`/forms?firstResult=${forms.page + forms.maxResults}&maxResults=${forms.maxResults}`}
                         >
                           {t('pages.forms.list.load-more')}
                         </a>

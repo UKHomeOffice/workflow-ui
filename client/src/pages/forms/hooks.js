@@ -11,7 +11,7 @@ export default () => {
   const { setAlertContext } = useContext(AlertContext);
   const navigation = useNavigation();
 
-  const submitForm = useCallback((submission, formInfo, id) => {
+  const submitForm = useCallback((submission, formInfo, id, handleOnFailure) => {
     if (formInfo) {
       const variables = {
         [formInfo.name]: {
@@ -30,6 +30,8 @@ export default () => {
           reference: `${submission.data.businessKey}`,
         });
         await navigation.navigate('/');
+      }).catch(() => {
+        handleOnFailure();
       });
     }
   }, [axiosInstance, navigation, setAlertContext, t]);

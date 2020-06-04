@@ -12,7 +12,7 @@ export default () => {
   const navigation = useNavigation();
 
   const submitForm = useCallback(({
-    submission, form, taskId, businessKey,
+    submission, form, taskId, businessKey, handleOnFailure,
   }) => {
     if (form) {
       const variables = {
@@ -32,6 +32,8 @@ export default () => {
           reference: `${businessKey}`,
         });
         await navigation.navigate('/');
+      }).catch(() => {
+        handleOnFailure();
       });
     }
   }, [axiosInstance, navigation, setAlertContext, t]);

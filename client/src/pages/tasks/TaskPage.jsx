@@ -21,6 +21,8 @@ const TaskPage = ({ taskId }) => {
   const axiosInstance = useAxios();
   const navigation = useNavigation();
   const [keycloak] = useKeycloak();
+  const [submitting, setSubmitting] = useState(false);
+
   const { submitForm } = apiHooks();
   const [task, setTask] = useState({
     isLoading: true,
@@ -114,6 +116,11 @@ const TaskPage = ({ taskId }) => {
     form, processInstance, task: taskInfo, processDefinition,
     formSubmission, variables,
   } = task.data;
+
+  const handleOnFailure = () => {
+    setSubmitting(false);
+  };
+
   return (
     <>
       <div className="govuk-grid-row">
@@ -160,6 +167,7 @@ const TaskPage = ({ taskId }) => {
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-full" id="form">
               <DisplayForm
+                submitting={submitting}
                 form={form}
                 handleOnCancel={async () => {
                   await navigation.navigate('/tasks');
@@ -176,11 +184,13 @@ const TaskPage = ({ taskId }) => {
                   }
                 }
                 handleOnSubmit={(submission) => {
+                  setSubmitting(true);
                   submitForm({
                     submission,
                     form,
                     taskId,
                     businessKey: processInstance.businessKey,
+                    handleOnFailure,
                   });
                 }}
               />
@@ -212,6 +222,7 @@ const TaskPage = ({ taskId }) => {
                       },
                       taskId,
                       businessKey: processInstance.businessKey,
+                      handleOnFailure,
                     });
                   }}
                 >

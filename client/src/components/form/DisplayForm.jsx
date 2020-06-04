@@ -7,25 +7,31 @@ import moment from 'moment';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import gds from '@digitalpatterns/formio-gds-template';
+import Loader from '@highpoint/react-loader-advanced';
+import { BLACK, WHITE } from 'govuk-colours';
 import { AlertContext } from '../../utils/AlertContext';
 import { augmentRequest, interpolate } from '../../utils/formioSupport';
 import Logger from '../../utils/logger';
+import ApplicationSpinner from '../ApplicationSpinner';
 
 Formio.use(gds);
 
 const DisplayForm = ({
   form, handleOnCancel, handleOnSubmit, existingSubmission,
   interpolateContext,
+  submitting,
 }) => {
   const { alertContext, setAlertContext } = useContext(AlertContext);
   const [submissionData, setSubmissionData] = useState(null);
 
   const formRef = useRef();
+  const host = `${window.location.protocol}//${window.location.hostname}${window.location.port
+    ? `:${window.location.port}` : ''}`;
 
   const [keycloak] = useKeycloak();
   /* istanbul ignore next */
-  Formio.baseUrl = '';
-  Formio.projectUrl = '';
+  Formio.baseUrl = host;
+  Formio.projectUrl = host;
   Formio.plugins = [
     augmentRequest(keycloak, form.id),
   ];
@@ -99,81 +105,88 @@ const DisplayForm = ({
     },
     ...interpolateContext,
   });
-
   return (
-    <Form
-      form={form}
-      ref={formRef}
-      onFormLoad={() => {
-        const start = new Date();
-        setTime({
-          ...time,
-          start,
-        });
-      }}
-      submission={existingSubmission}
-      onSubmit={() => {
-        setTime({
-          ...time,
-          end: new Date(),
-          submitted: true,
-        });
-        handleOnSubmit(submissionData);
-      }}
-      onChange={(data) => {
-        setSubmissionData(data);
-        if (formRef.current) {
-          validate(formRef.current.formio, data);
-        }
-      }}
-      onError={(errors) => {
-        setAlertContext({
-          type: 'form-error',
-          errors,
-          form: formRef.current,
-        });
-      }}
-      options={{
-        breadcrumbSettings: {
-          clickable: false,
-        },
-        noAlerts: true,
-        hooks: {
-          beforeCancel: async () => {
-            setTime({
-              ...time,
-              end: new Date(),
-              submitted: false,
-            });
-            handleOnCancel();
+    <Loader
+      show={submitting}
+      message={<ApplicationSpinner translationKey="submitting" colour={BLACK} />}
+      foregroundStyle={{ color: BLACK }}
+      backgroundStyle={{ backgroundColor: WHITE }}
+    >
+      <Form
+        form={form}
+        ref={formRef}
+        onFormLoad={() => {
+          const start = new Date();
+          setTime({
+            ...time,
+            start,
+          });
+        }}
+        submission={existingSubmission}
+        onSubmit={() => {
+          setTime({
+            ...time,
+            end: new Date(),
+            submitted: true,
+          });
+          handleOnSubmit(submissionData);
+        }}
+        onChange={(data) => {
+          setSubmissionData(data);
+          if (formRef.current) {
+            validate(formRef.current.formio, data);
+          }
+        }}
+        onError={(errors) => {
+          setAlertContext({
+            type: 'form-error',
+            errors,
+            form: formRef.current,
+          });
+        }}
+        options={{
+          breadcrumbSettings: {
+            clickable: false,
           },
-          buttonSettings: {
-            showCancel: true,
+          noAlerts: true,
+          hooks: {
+            beforeCancel: async () => {
+              setTime({
+                ...time,
+                end: new Date(),
+                submitted: false,
+              });
+              handleOnCancel();
+            },
+            buttonSettings: {
+              showCancel: true,
+            },
+            beforeSubmit: (submission, next) => {
+              const {
+                versionId, id, title, name,
+              } = form;
+                // eslint-disable-next-line no-param-reassign
+              submission.data.form = {
+                formVersionId: versionId,
+                formId: id,
+                title,
+                name,
+                submissionDate: new Date(),
+                submittedBy: keycloak.tokenParsed.email,
+              };
+              next();
+            },
           },
-          beforeSubmit: (submission, next) => {
-            const {
-              versionId, id, title, name,
-            } = form;
-            // eslint-disable-next-line no-param-reassign
-            submission.data.form = {
-              formVersionId: versionId,
-              formId: id,
-              title,
-              name,
-              submissionDate: new Date(),
-              submittedBy: keycloak.tokenParsed.email,
-            };
-            next();
-          },
-        },
-      }}
-    />
+        }}
+      />
+    </Loader>
   );
 };
 
 DisplayForm.defaultProps = {
   existingSubmission: null,
   interpolateContext: null,
+  submitting: false,
 };
 
 DisplayForm.propTypes = {
@@ -188,6 +201,7 @@ DisplayForm.propTypes = {
   handleOnSubmit: PropTypes.func.isRequired,
   existingSubmission: PropTypes.shape({ root: PropTypes.object }),
   interpolateContext: PropTypes.shape({ root: PropTypes.object }),
+  submitting: PropTypes.bool,
 };
 
 export default DisplayForm;
