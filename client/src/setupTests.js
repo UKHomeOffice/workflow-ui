@@ -82,3 +82,5 @@ global.MutationObserver = class {
   // eslint-disable-next-line no-unused-vars
   observe = jest.fn((target, options) => {});
 };
+
+global.URL.createObjectURL = jest.fn();
