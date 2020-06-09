@@ -13,6 +13,7 @@ import { AlertContext } from '../../utils/AlertContext';
 import { augmentRequest, interpolate } from '../../utils/formioSupport';
 import Logger from '../../utils/logger';
 import ApplicationSpinner from '../ApplicationSpinner';
+import FileService from '../../utils/FileService';
 
 Formio.use(gds);
 
@@ -23,7 +24,6 @@ const DisplayForm = ({
 }) => {
   const { alertContext, setAlertContext } = useContext(AlertContext);
   const [submissionData, setSubmissionData] = useState(null);
-
   const formRef = useRef();
   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port
     ? `:${window.location.port}` : ''}`;
@@ -35,6 +35,8 @@ const DisplayForm = ({
   Formio.plugins = [
     augmentRequest(keycloak, form.id),
   ];
+
+  const fileService = new FileService(keycloak);
 
   const [time, setTime] = useState({
     start: null,
@@ -149,6 +151,7 @@ const DisplayForm = ({
             clickable: false,
           },
           noAlerts: true,
+          fileService,
           hooks: {
             beforeCancel: async () => {
               setTime({
