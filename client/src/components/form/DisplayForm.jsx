@@ -104,6 +104,9 @@ const DisplayForm = ({
       subject: keycloak.subject,
       url: keycloak.authServerUrl,
       realm: keycloak.realm,
+      roles: keycloak.tokenParsed.realm_access.roles,
+      groups: keycloak.tokenParsed.groups,
+
     },
     ...interpolateContext,
   });
