@@ -3,14 +3,12 @@ on:
   push:
     branches:
       - master
-  schedule:
-    - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      IMAGE: 'digitalpatterns/workflow-ui/workflow-ui-master'
-      IMAGE_DOCKER_HUB: 'digitalpatterns/workflow-ui'
+      IMAGE: 'workflow-ui'
+      REPO: 'ukhomeofficedigital/workflow-ui'
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -46,12 +44,13 @@ jobs:
       - name: Publish to Docker Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: ${{ env.IMAGE_DOCKER_HUB }}
+          name: ${{ env.REPO}}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: quay.io
           cache: true
           snapshot: true
-          tags: "latest"
+          tags: "${{ github.sha }}"
       - uses: 8398a7/action-slack@v2
         with:
           status: ${{ job.status }}
