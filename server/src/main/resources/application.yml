@@ -20,7 +20,7 @@ zuul:
     fileupload-service:
       path: /files/**
       strip-prefix: false
-      url: ${fileUploadApi.url:http://localhost:4001}
+      url: ${fileUploadApi.url:http://localhost:9003}
     refdata-service:
       path: /refdata/**
       strip-prefix: true

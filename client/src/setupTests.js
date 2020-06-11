@@ -38,6 +38,9 @@ jest.mock('@react-keycloak/web', () => ({
         given_name: 'test',
         family_name: 'test',
         email: 'test',
+        realm_access: {
+          roles: ['test'],
+        },
       },
       logout: mockLogout,
     },

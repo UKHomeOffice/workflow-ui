@@ -136,7 +136,7 @@ const FormsListPage = () => {
               <ul className="govuk-list">
                 {
                   forms.data.map((form) => {
-                    const href = `/forms/${form.id}`;
+                    const href = `/forms/${form.key}`;
                     return (
                       <li key={form.id} className="govuk-!-margin-bottom-2">
                         <a

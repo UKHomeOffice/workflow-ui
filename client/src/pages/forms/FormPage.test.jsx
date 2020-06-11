@@ -44,7 +44,7 @@ describe('FormPage', () => {
   });
 
   it('loads form', async () => {
-    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+    mockAxios.onGet('/camunda/engine-rest/process-definition/key/id/startForm')
       .reply(200, {
         key: 'formKey',
       });
@@ -73,7 +73,7 @@ describe('FormPage', () => {
   });
 
   it('form does not exist handles gracefully', async () => {
-    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+    mockAxios.onGet('/camunda/engine-rest/process-definition/key/id/startForm')
       .reply(200, null);
 
     const wrapper = mount(<FormPage formId="id" />);
@@ -88,7 +88,7 @@ describe('FormPage', () => {
   });
 
   it('can submit the form', async () => {
-    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+    mockAxios.onGet('/camunda/engine-rest/process-definition/key/id/startForm')
       .reply(200, {
         key: 'formKey',
       });
@@ -166,7 +166,7 @@ describe('FormPage', () => {
   });
 
   it('expect form time to be logged', async () => {
-    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+    mockAxios.onGet('/camunda/engine-rest/process-definition/key/id/startForm')
       .reply(200, {
         key: 'formKey',
       });
@@ -239,7 +239,7 @@ describe('FormPage', () => {
   });
 
   it('renders error on form', async () => {
-    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+    mockAxios.onGet('/camunda/engine-rest/process-definition/key/id/startForm')
       .reply(200, {
         key: 'formKey',
       });
@@ -333,7 +333,7 @@ describe('FormPage', () => {
   });
 
   it('clears alert box if no more errors', async () => {
-    mockAxios.onGet('/camunda/engine-rest/process-definition/id/startForm')
+    mockAxios.onGet('/camunda/engine-rest/process-definition/key/id/startForm')
       .reply(200, {
         key: 'formKey',
       });
