@@ -32,7 +32,7 @@ const FormPage = ({ formId }) => {
     const loadForm = async () => {
       if (axiosInstance) {
         try {
-          const formKey = await axiosInstance.get(`/camunda/engine-rest/process-definition/${formId}/startForm`, {
+          const formKey = await axiosInstance.get(`/camunda/engine-rest/process-definition/key/${formId}/startForm`, {
             cancelToken: source.token,
           });
           if (formKey && formKey.data) {

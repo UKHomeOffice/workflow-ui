@@ -29,6 +29,7 @@ describe('FormsListPage', () => {
       .reply(200, [{
         id: 'id',
         name: 'name',
+        key: 'key',
       }]);
 
     mockAxios.onGet('/camunda/engine-rest/process-definition/count')
@@ -49,7 +50,7 @@ describe('FormsListPage', () => {
       preventDefault: () => {},
     });
 
-    expect(mockNavigate).toBeCalledWith('/forms/id');
+    expect(mockNavigate).toBeCalledWith('/forms/key');
   });
 
   it('can handle exception in loading', async () => {
@@ -74,6 +75,7 @@ describe('FormsListPage', () => {
       mockData.push({
         id: `id${(Math.random() + Math.random())}`,
         name: `name${i}`,
+        key: `key${i}`,
       });
     }
 
@@ -103,6 +105,7 @@ describe('FormsListPage', () => {
       mockData.push({
         id: `id${(Math.random() + Math.random())}`,
         name: `name${i}`,
+        key: `key${i}`,
       });
     }
 
