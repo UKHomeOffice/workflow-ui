@@ -17,7 +17,7 @@ describe('hooks', () => {
 
   it('can handle submit', async () => {
     mockAxios
-      .onPost('/camunda/engine-rest/process-definition/formId/submit-form')
+      .onPost('/camunda/engine-rest/process-definition/key/formId/submit-form')
       .reply(200, {});
     // eslint-disable-next-line react/prop-types
     const wrapper = ({ children }) => (
@@ -42,7 +42,7 @@ describe('hooks', () => {
 
   it('can calls handle failure ', async () => {
     mockAxios
-      .onPost('/camunda/engine-rest/process-definition/formId/submit-form')
+      .onPost('/camunda/engine-rest/process-definition/key/formId/submit-form')
       .reply(500, {});
     // eslint-disable-next-line react/prop-types
     const wrapper = ({ children }) => (

@@ -19,7 +19,7 @@ export default () => {
           type: 'json',
         },
       };
-      axiosInstance.post(`/camunda/engine-rest/process-definition/${id}/submit-form`, {
+      axiosInstance.post(`/camunda/engine-rest/process-definition/key/${id}/submit-form`, {
         variables,
         businessKey: submission.data.businessKey,
       }).then(async () => {
