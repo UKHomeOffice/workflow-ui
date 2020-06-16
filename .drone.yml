@@ -1,0 +1,132 @@
+pipeline:
+  synch_dev_secrets:
+    image: quay.io/ukhomeofficedigital/cop-secrets
+    environment:
+      - DRONE_SERVER=https://drone.acp.homeoffice.gov.uk
+      - DEPLOY_ENV=dev
+    secrets:
+      - source: DEV_DRONE_AWS_ACCESS_KEY_ID
+        target: AWS_ACCESS_KEY_ID
+      - source: DEV_DRONE_AWS_SECRET_ACCESS_KEY
+        target: AWS_SECRET_ACCESS_KEY
+      - source: DRONE_PUBLIC_TOKEN
+        target: DRONE_TOKEN
+    when:
+      environment: secrets
+      event: deployment
+
+  synch_production_secrets:
+    image: quay.io/ukhomeofficedigital/cop-secrets
+    environment:
+      - DRONE_SERVER=https://drone.acp.homeoffice.gov.uk
+      - DEPLOY_ENV=production
+    secrets:
+      - source: PRODUCTION_DRONE_AWS_ACCESS_KEY_ID
+        target: AWS_ACCESS_KEY_ID
+      - source: PRODUCTION_DRONE_AWS_SECRET_ACCESS_KEY
+        target: AWS_SECRET_ACCESS_KEY
+      - source: DRONE_PUBLIC_TOKEN
+        target: DRONE_TOKEN
+    when:
+      environment: secrets
+      event: deployment
+
+  deploy_to_dev:
+    image: quay.io/ukhomeofficedigital/kd
+    secrets:
+    - source: DEV_KUBE_SERVER
+      target: KUBE_SERVER
+    - source: DEV_EFORMS_KUBE_TOKEN
+      target: KUBE_TOKEN
+    - source: DEV_KUBE_NAMESPACE_COP_EFORMS
+      target: KUBE_NAMESPACE
+    - source: NGINX_IMAGE
+      target: NGINX_IMAGE
+    - source: NGINX_TAG
+      target: NGINX_TAG
+    - source: DEV_WORKFLOW_UI_AWS_ACCESS_KEY_ID
+      target: AWS_ACCESS_KEY
+    - source: AWS_REGION
+      target: AWS_REGION
+    - source: DEV_WORKFLOW_UI_AWS_SECRET_ACCESS_KEY
+      target: AWS_SECRET_KEY
+    - source: DEV_WORKFLOW_UI_AWS_SECRETS_MANAGER_ENABLED
+      target: AWS_SECRETS_MANAGER_ENABLED
+    - source: WORKFLOW_UI_NAME
+      target: WORKFLOW_UI_NAME
+    - source: DEV_WORKFLOW_UI_URL
+      target: WORKFLOW_UI_URL
+    - source: WORKFLOW_UI_IMAGE
+      target: WORKFLOW_UI_IMAGE
+    commands:
+      - export SPRING_PROFILES_ACTIVE="dev"
+      - export WORKFLOW_UI_TAG=$${DRONE_COMMIT_SHA}
+      - kd --insecure-skip-tls-verify -f kube/cert.yml
+      - kd --insecure-skip-tls-verify -f kube/secret.yml
+      - kd --insecure-skip-tls-verify -f kube/network-policy.yml
+      - kd --insecure-skip-tls-verify -f kube/service.yml
+      - kd --insecure-skip-tls-verify -f kube/deployment.yml --timeout=5m
+      - kd --insecure-skip-tls-verify -f kube/ingress.yml
+    when:
+      branch: master
+      environment: dev
+      event: deployment
+
+  deploy_to_production:
+    image: quay.io/ukhomeofficedigital/kd
+    secrets:
+    - source: PRODUCTION_KUBE_SERVER
+      target: KUBE_SERVER
+    - source: PRODUCTION_EFORMS_KUBE_TOKEN
+      target: KUBE_TOKEN
+    - source: PRODUCTION_KUBE_NAMESPACE_COP_EFORMS
+      target: KUBE_NAMESPACE
+    - source: NGINX_IMAGE
+      target: NGINX_IMAGE
+    - source: NGINX_TAG
+      target: NGINX_TAG
+    - source: PRODUCTION_WORKFLOW_UI_AWS_ACCESS_KEY_ID
+      target: AWS_ACCESS_KEY
+    - source: AWS_REGION
+      target: AWS_REGION
+    - source: PRODUCTION_WORKFLOW_UI_AWS_SECRET_ACCESS_KEY
+      target: AWS_SECRET_KEY
+    - source: PRODUCTION_WORKFLOW_UI_AWS_SECRETS_MANAGER_ENABLED
+      target: AWS_SECRETS_MANAGER_ENABLED
+    - source: WORKFLOW_UI_NAME
+      target: WORKFLOW_UI_NAME
+    - source: PRODUCTION_WORKFLOW_UI_URL
+      target: WORKFLOW_UI_URL
+    - source: WORKFLOW_UI_IMAGE
+      target: WORKFLOW_UI_IMAGE
+    commands:
+      - export SPRING_PROFILES_ACTIVE="production"
+      - export WORKFLOW_UI_TAG=$${DRONE_COMMIT_SHA}
+      - kd --insecure-skip-tls-verify -f kube/cert.yml
+      - kd --insecure-skip-tls-verify -f kube/secret.yml
+      - kd --insecure-skip-tls-verify -f kube/network-policy.yml
+      - kd --insecure-skip-tls-verify -f kube/service.yml
+      - kd --insecure-skip-tls-verify -f kube/deployment.yml --timeout=5m
+      - kd --insecure-skip-tls-verify -f kube/ingress.yml
+    when:
+      branch: master
+      environment: production
+      event: deployment
+
+  notify:
+    image: plugins/slack
+    secrets: [ SLACK_WEBHOOK ]
+    channel: cop-deployments
+    username: Drone Build Watcher
+    template: >
+      {{#build.deployTo}}
+        *{{repo.name}} - Build {{build.number}} - {{uppercasefirst build.deployTo}} - {{uppercase build.status}}*
+        {{build.link}}
+      {{else}}
+        *{{repo.name}} - Build {{build.number}} - Development - {{uppercase build.status}}*
+        {{build.link}}
+      {{/build.deployTo}}
+    when:
+      branch: master
+      event: deployment
+      status: [ success, failure ]
