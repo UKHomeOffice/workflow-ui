@@ -127,6 +127,12 @@ const DisplayForm = ({
             start,
           });
         }}
+        onNextPage={() => {
+          window.scrollTo(0, 0);
+        }}
+        onPrevPage={() => {
+          window.scrollTo(0, 0);
+        }}
         submission={existingSubmission}
         onSubmit={() => {
           setTime({

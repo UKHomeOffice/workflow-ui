@@ -5,6 +5,12 @@ import { act } from '@testing-library/react';
 import FormErrorsAlert from './FormErrorsAlert';
 
 describe('FormErrorsAlert', () => {
+  beforeEach(() => {
+    // eslint-disable-next-line no-console
+    console.error = jest.fn();
+    // eslint-disable-next-line no-console
+    console.warn = jest.fn();
+  });
   it('renders without crashing', async () => {
     const form = mount(
       <Form
