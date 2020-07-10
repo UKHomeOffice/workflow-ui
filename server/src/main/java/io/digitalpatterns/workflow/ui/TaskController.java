@@ -1,17 +1,19 @@
 package io.digitalpatterns.workflow.ui;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import static java.lang.String.format;
@@ -30,6 +32,56 @@ public class TaskController {
         this.zuulProperties = zuulProperties;
     }
 
+    @GetMapping(path="/lite/{taskId}")
+    public ResponseEntity<?> taskLite(@PathVariable String taskId) {
+
+        JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setBearerAuth(token.getToken().getTokenValue());
+
+        ZuulProperties.ZuulRoute zuulRoute = zuulProperties.getRoutes().get("workflow-service");
+
+        JSONObject taskDto = new JSONObject(restTemplate.exchange(
+                format("%s/camunda/engine-rest/task/%s", zuulRoute.getUrl(), taskId),
+                HttpMethod.GET,
+                new HttpEntity<>(httpHeaders),
+                String.class
+        ).getBody());
+        String processDefinitionId = taskDto.getString("processDefinitionId");
+
+        JSONObject processDefinitionDto = new JSONObject(restTemplate.exchange(
+                format("%s/camunda/engine-rest/process-definition/%s", zuulRoute.getUrl(),
+                        processDefinitionId),
+                HttpMethod.GET,
+                new HttpEntity<>(httpHeaders),
+                String.class
+        ).getBody());
+
+
+        Object groups = token.getTokenAttributes().get("groups");
+
+        JSONObject body = new JSONObject();
+        JSONArray orQueries = new JSONArray();
+        JSONObject data = new JSONObject();
+        data.put("assignee", token.getName());
+        data.put("candidateGroups", groups);
+        orQueries.put(data);
+        body.put("orQueries", orQueries);
+        TaskCount taskCount = restTemplate.exchange(format("%s/camunda/engine-rest/task/count", zuulRoute.getUrl()),
+                HttpMethod.POST,
+                new HttpEntity<>(
+                        body.toString(), httpHeaders
+                ),
+                TaskCount.class).getBody();
+
+
+        JSONObject response = new JSONObject();
+        response.put("task", taskDto);
+        response.put("processDefinition", processDefinitionDto);
+        response.put("taskCount", taskCount.count);
+        return ResponseEntity.ok(response.toString());
+    }
 
     @GetMapping(path = "{taskId}")
     public ResponseEntity<?> task(@PathVariable String taskId) {
@@ -41,12 +93,20 @@ public class TaskController {
 
 
         JSONObject taskDto = new JSONObject(restTemplate.exchange(
-               format("%s/camunda/engine-rest/task/%s", zuulRoute.getUrl(), taskId),
-               HttpMethod.GET,
-               new HttpEntity<>(httpHeaders),
+                format("%s/camunda/engine-rest/task/%s", zuulRoute.getUrl(), taskId),
+                HttpMethod.GET,
+                new HttpEntity<>(httpHeaders),
                 String.class
         ).getBody());
 
+        JSONObject taskVariableDto = new JSONObject(restTemplate.exchange(
+                format("%s/camunda/engine-rest/task/%s/variables?deserializeValues=false", zuulRoute.getUrl(), taskId),
+                HttpMethod.GET,
+                new HttpEntity<>(httpHeaders),
+                String.class
+        ).getBody());
+
+        taskDto.put("variables", taskVariableDto);
 
         String processInstanceId = taskDto.getString("processInstanceId");
         String processDefinitionId = taskDto.getString("processDefinitionId");
@@ -102,5 +162,8 @@ public class TaskController {
         return ResponseEntity.ok(response.toString());
     }
 
-
+    @Data
+    public static class TaskCount {
+        private Long count;
+    }
 }

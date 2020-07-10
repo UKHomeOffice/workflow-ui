@@ -46,6 +46,17 @@ const TaskPage = ({ taskId }) => {
             const formVariableSubmissionName = form ? `${form.name}::submissionData`
               : null;
 
+
+            if (taskInfo.variables) {
+              Object.keys(taskInfo.variables).forEach((key) => {
+                if (taskInfo.variables[key].type === 'Json') {
+                  taskInfo.variables[key] = JSON.parse(taskInfo.variables[key].value);
+                } else {
+                  taskInfo.variables[key] = taskInfo.variables[key].value;
+                }
+              });
+            }
+
             if (variables) {
               Object.keys(variables).forEach((key) => {
                 if (variables[key].type === 'Json') {
@@ -107,7 +118,7 @@ const TaskPage = ({ taskId }) => {
     assignee = t('pages.task.unassigned');
   } else if (
     taskAssignee
-      && taskAssignee !== tokenParsed.email
+    && taskAssignee !== tokenParsed.email
   ) {
     assignee = tokenParsed.email;
   }

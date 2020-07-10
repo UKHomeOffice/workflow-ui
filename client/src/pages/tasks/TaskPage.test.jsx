@@ -78,9 +78,22 @@ describe('TaskPage', () => {
           due: moment(),
           priority: '1000',
           assignee: 'test',
+          variables: {
+            taskVariableA: {
+              type: 'Json',
+              value: JSON.stringify({ data: { text: 'test' } }),
+            },
+            testEmail: {
+              value: 'test',
+              type: 'string',
+            },
+          },
         },
         variables: {
-          email: 'test',
+          email: {
+            value: 'test',
+            type: 'string',
+          },
           test: {
             type: 'Json',
             value: JSON.stringify({ data: { text: 'test' } }),
