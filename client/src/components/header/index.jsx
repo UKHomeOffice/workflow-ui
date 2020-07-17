@@ -78,7 +78,6 @@ const Header = () => {
   );
 };
 
-
 const StyledCol = styled.div`
   @includes govuk-grid-column-one-half;
    font-weight: bold;
@@ -96,6 +95,5 @@ const HeaderContent = styled.div`
   @includes: govuk-header__content;
    width: 100%;
 `;
-
 
 export default Header;

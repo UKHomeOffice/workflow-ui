@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -24,7 +23,6 @@ const ApplicationSpinner = ({ translationKey, args, colour }) => {
     </>
   );
 };
-
 
 const SpinnerContainer = styled.div`
 position: fixed;

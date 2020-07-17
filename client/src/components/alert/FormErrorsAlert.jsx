@@ -48,7 +48,6 @@ const FormErrorsAlert = ({ form, errors }) => {
   );
 };
 
-
 FormErrorsAlert.propTypes = {
   form: PropTypes.instanceOf(Form).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,

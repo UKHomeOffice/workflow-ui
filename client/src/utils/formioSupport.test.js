@@ -3,7 +3,6 @@ import axios from 'axios';
 import { augmentRequest, interpolate } from './formioSupport';
 import Logger from './logger';
 
-
 jest.mock('./logger', () => ({
   error: jest.fn(),
 }));

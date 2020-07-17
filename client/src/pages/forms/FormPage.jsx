@@ -4,12 +4,12 @@ import React, {
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useNavigation } from 'react-navi';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import FormioUtils from 'formiojs/utils';
 import { useAxios, useIsMounted } from '../../utils/hooks';
 import ApplicationSpinner from '../../components/ApplicationSpinner';
 import apiHooks from './hooks';
 import DisplayForm from '../../components/form/DisplayForm';
-
 
 const FormPage = ({ formId }) => {
   const { submitForm } = apiHooks();
@@ -22,9 +22,7 @@ const FormPage = ({ formId }) => {
     data: null,
   });
 
-
   const axiosInstance = useAxios();
-
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -97,7 +95,6 @@ const FormPage = ({ formId }) => {
     />
   );
 };
-
 
 FormPage.propTypes = {
   formId: PropTypes.string.isRequired,

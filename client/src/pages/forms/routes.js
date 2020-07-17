@@ -4,7 +4,6 @@ import { withAuthentication } from '../../routes/utils';
 import FormsListPage from './FormsListPage';
 import FormPage from './FormPage';
 
-
 const routes = mount({
   '/': map((request, context) => withAuthentication(route({
     title: context.t('pages.forms.list.title'),

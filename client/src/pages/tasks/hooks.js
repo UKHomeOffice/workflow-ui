@@ -4,7 +4,6 @@ import { useNavigation } from 'react-navi';
 import { useAxios } from '../../utils/hooks';
 import { AlertContext } from '../../utils/AlertContext';
 
-
 export default () => {
   const axiosInstance = useAxios();
   const { t } = useTranslation();

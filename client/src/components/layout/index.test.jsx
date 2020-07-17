@@ -8,7 +8,6 @@ jest.mock('../../utils/logger', () => ({
   error: jest.fn(),
 }));
 
-
 describe('Layout', () => {
   beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});

@@ -1,7 +1,6 @@
 import React from 'react';
 import { scrollToMainContent } from '../utils/scrollToMainContent';
 
-
 const SkipLink = () => (
   <a
     href="#main-content"

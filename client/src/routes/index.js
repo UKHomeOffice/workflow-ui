@@ -1,4 +1,3 @@
-
 import {
   map, lazy, mount, route, redirect,
 } from 'navi';

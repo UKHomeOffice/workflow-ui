@@ -14,7 +14,6 @@ const ApiErrorAlert = ({
     return null;
   }
 
-
   const buildMessage = (err) => {
     const { status, message } = err;
     let errorMessage;
@@ -91,7 +90,6 @@ const ApiErrorAlert = ({
     </div>
   );
 };
-
 
 ApiErrorAlert.propTypes = {
   errors: PropType.arrayOf(PropType.shape({

@@ -3,7 +3,6 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import qs from 'querystring';
 
-
 class FileService {
   constructor(keycloak) {
     this.keycloak = keycloak;
@@ -114,6 +113,5 @@ class FileService {
     });
   }
 }
-
 
 export default FileService;

@@ -58,7 +58,6 @@ describe('TasksListPage', () => {
       });
     }
 
-
     mockAxios.onGet('/camunda/engine-rest/process-definition')
       .reply(200, [{
         category: 'test',
@@ -80,7 +79,6 @@ describe('TasksListPage', () => {
       await new Promise((resolve) => setImmediate(resolve));
       await wrapper.update();
     });
-
 
     expect(wrapper.find('a[id="loadMore"]').exists()).toBe(true);
 

@@ -1,4 +1,3 @@
-
 import determinePriority from './priority';
 
 describe('Priority', () => {

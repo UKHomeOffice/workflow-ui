@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import FormioUtils from 'formiojs/utils';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
@@ -41,7 +42,7 @@ export const interpolate = (form, submission) => {
       }, 'value');
       component.customDefaultValue = '';
     }
-  });
+  }, true);
   /* eslint-enable */
 };
 

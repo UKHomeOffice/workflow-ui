@@ -13,7 +13,6 @@ const Home = () => {
 
   const axiosInstance = useAxios();
 
-
   const [formsCount, setFormsCount] = useState({
     isLoading: true,
     count: 0,
@@ -50,7 +49,6 @@ const Home = () => {
         }
       });
 
-
       axiosInstance({
         method: 'POST',
         url: '/camunda/engine-rest/task/count',
@@ -84,7 +82,6 @@ const Home = () => {
   }, [axiosInstance, setFormsCount, setTasksCount, isMounted,
     keycloak.tokenParsed.groups,
     keycloak.tokenParsed.email]);
-
 
   return (
     <div className="govuk-!-margin-top-7">

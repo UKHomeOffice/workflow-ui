@@ -6,11 +6,9 @@ import apiHooks from './hooks';
 import { mockNavigate } from '../../setupTests';
 import { AlertContextProvider } from '../../utils/AlertContext';
 
-
 jest.mock('../../utils/logger', () => ({
   error: jest.fn(),
 }));
-
 
 describe('hooks', () => {
   const mockAxios = new MockAdapter(axios);

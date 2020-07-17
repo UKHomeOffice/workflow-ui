@@ -52,7 +52,6 @@ export const useAxios = () => {
   return axiosInstance.instance;
 };
 
-
 export const useIsMounted = () => {
   const isMounted = useRef(false);
   useEffect(() => {

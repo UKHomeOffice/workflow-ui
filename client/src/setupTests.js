@@ -9,7 +9,6 @@ import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
-
 export const mockNavigate = jest.fn();
 export const mockLogout = jest.fn();
 export const mockLogin = jest.fn();
@@ -61,7 +60,6 @@ jest.mock('react-navi', () => ({
   }),
 }));
 
-
 jest.mock('react-i18next', () => ({
   withTranslation: () => (Component) => {
     // eslint-disable-next-line no-param-reassign
@@ -74,7 +72,6 @@ jest.mock('react-i18next', () => ({
 config.set({
   serviceUrl: 'bar',
 }, { freeze: false });
-
 
 global.MutationObserver = class {
   // eslint-disable-next-line no-useless-constructor,no-unused-vars,no-empty-function

@@ -4,7 +4,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useAxios, useIsMounted } from './hooks';
 import Logger from './logger';
 
-
 jest.mock('./logger', () => ({
   error: jest.fn(),
 }));

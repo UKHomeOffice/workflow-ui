@@ -40,7 +40,6 @@ ErrorFallback.propTypes = {
   resetErrorBoundary: PropTypes.func.isRequired,
 };
 
-
 const Layout = ({ children }) => {
   const [keycloak] = useKeycloak();
   const route = useCurrentRoute();

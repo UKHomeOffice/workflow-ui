@@ -3,7 +3,6 @@ import { shallow, mount } from 'enzyme';
 import Header from './index';
 import { mockNavigate } from '../../setupTests';
 
-
 describe('Header', () => {
   it('renders without crashing', () => {
     shallow(<Header />);

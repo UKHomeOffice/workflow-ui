@@ -12,7 +12,6 @@ const AlertBanner = () => {
   }
   const { type, status } = alertContext;
 
-
   if (type === 'form-submission' && status === 'successful') {
     return (
       <SubmissionSuccessAlert

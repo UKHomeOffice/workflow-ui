@@ -182,7 +182,6 @@ describe('TaskPage', () => {
 
     expect(displayForm.exists()).toBe(true);
 
-
     await act(async () => {
       await displayForm.props().handleOnSubmit({
         data: {
@@ -248,7 +247,6 @@ describe('TaskPage', () => {
     const completeButton = wrapper.find('button').at(0);
 
     expect(completeButton.exists()).toBe(true);
-
 
     await act(async () => {
       await completeButton.simulate('click');

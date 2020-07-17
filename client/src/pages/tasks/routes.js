@@ -4,7 +4,6 @@ import { withAuthentication } from '../../routes/utils';
 import TasksListPage from './TasksListPage';
 import TaskPage from './TaskPage';
 
-
 const routes = mount({
   '/': map((request, context) => withAuthentication(route({
     title: context.t('pages.tasks.list.title'),

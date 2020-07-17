@@ -14,7 +14,6 @@ import determinePriority from '../../utils/priority';
 import DisplayForm from '../../components/form/DisplayForm';
 import apiHooks from './hooks';
 
-
 const TaskPage = ({ taskId }) => {
   const isMounted = useIsMounted();
   const { t } = useTranslation();
@@ -46,7 +45,6 @@ const TaskPage = ({ taskId }) => {
             const formVariableSubmissionName = form ? `${form.name}::submissionData`
               : null;
 
-
             if (taskInfo.variables) {
               Object.keys(taskInfo.variables).forEach((key) => {
                 if (taskInfo.variables[key].type === 'Json') {
@@ -69,7 +67,6 @@ const TaskPage = ({ taskId }) => {
               formSubmission = variables[formVariableSubmissionName]
                 ? variables[formVariableSubmissionName] : variables.submissionData;
             }
-
 
             const updatedVariables = _.omit(variables || {}, ['submissionData', formVariableSubmissionName]);
             setTask({
@@ -100,11 +97,9 @@ const TaskPage = ({ taskId }) => {
     };
   }, [axiosInstance, setTask, isMounted, taskId]);
 
-
   if (task.isLoading) {
     return <ApplicationSpinner />;
   }
-
 
   if (!task.data) {
     return null;
@@ -247,7 +242,6 @@ const TaskPage = ({ taskId }) => {
     </>
   );
 };
-
 
 TaskPage.propTypes = {
   taskId: PropTypes.string.isRequired,
