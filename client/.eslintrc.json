@@ -30,6 +30,14 @@
   "plugins": [
     "react"
   ],
+  "overrides": [
+    {
+      "files": ["AccessibilityStatement.jsx", "PrivacyPolicy.jsx"],
+      "rules": {
+        "max-len": 0
+      }
+    }
+  ],
   "rules": {
     "no-underscore-dangle": "off",
     "react/react-in-jsx-scope": "off",

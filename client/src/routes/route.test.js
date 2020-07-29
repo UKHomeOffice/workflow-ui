@@ -15,7 +15,9 @@ describe('Base routes', () => {
       ${'/login'}                                           | ${true}
       ${'/logout'}                                          | ${true}
       ${'/login?redirectTo=/'}                              | ${true}
-      ${'/login'}                                           | ${false}    
+      ${'/login'}                                           | ${false}   
+      ${'/accessibility-statement'}                         | ${false}    
+      ${'/privacy-and-cookie-policy'}                       | ${false}     
     `('title and views for $path should be defined', async ({ path, authenticated }) => {
   const navigation = createMemoryNavigation({
     url: `${path}`,

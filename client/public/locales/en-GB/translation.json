@@ -37,9 +37,20 @@
     "new-service-3" : "will help use improve it"
   },
   "footer" : {
-    "powered-by" : "Powered by COP technology"
+    "help" : "Help",
+    "powered-by" : "Powered by COP technology",
+    "accessibility" : "Accessibility Statement",
+    "privacy" : "Privacy and Cookie Policy",
+    "support-links" : "Support links",
+    "copyright" : "© Crown copyright"
   },
   "pages" : {
+    "accessibility" : {
+      "title":  "Accessibility Statement | eForms"
+    },
+    "privacy" : {
+      "title" : "Privacy and Cookie Policy | eForms"
+    },
     "home" : {
       "title": "eForms",
       "header": "eForms/Tasks Dashboard",
