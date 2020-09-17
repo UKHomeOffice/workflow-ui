@@ -24,7 +24,7 @@ if (window.ENVIRONMENT_CONFIG) {
     authClientId: process.env.REACT_APP_AUTH_CLIENT_ID,
     uiEnvironment: process.env.REACT_APP_UI_ENVIRONMENT,
     uiVersion: process.env.REACT_APP_UI_VERSION,
-    serviceDeskUrl: process.env.REACT_APPP_SERVICE_DESK_URL,
+    serviceDeskUrl: process.env.REACT_APP_SERVICE_DESK_URL,
   });
 }
 
