@@ -33,14 +33,11 @@ jobs:
         run: ./gradlew clean assemble
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag ${{ env.IMAGE }}:latest
-      - uses: anchore/scan-action@master
+      - uses: anchore/scan-action@main
         with:
-          image-reference: "${{ env.IMAGE }}:latest"
-          dockerfile-path: "./Dockerfile"
+          image: "${{ env.IMAGE }}:latest"
           fail-build: false
-          include-app-packages: true
-      - name: anchore inline scan JSON results
-        run: cat ./anchore-reports/vulnerabilities.json;
+          severity-cutoff: critical
       - name: Publish to Docker Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
