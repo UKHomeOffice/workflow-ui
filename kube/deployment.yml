@@ -43,10 +43,6 @@ spec:
           value: "/certs/tls.crt"
         - name: SERVER_KEY
           value: "/certs/tls.key"
-        - name: PORT_IN_HOST_HEADER
-          value: "FALSE"
-        - name: ERROR_REDIRECT_CODES
-          value: "599"
         - name: LOG_FORMAT_NAME
           value: 'json'
         - name: ENABLE_UUID_PARAM
