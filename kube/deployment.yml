@@ -39,6 +39,14 @@ spec:
           value: 'http://127.0.0.1'
         - name: PROXY_SERVICE_PORT
           value: "8000"
+        - name: SERVER_CERT
+          value: "/certs/tls.crt"
+        - name: SERVER_KEY
+          value: "/certs/tls.key"
+        - name: PORT_IN_HOST_HEADER
+          value: "FALSE"
+        - name: ERROR_REDIRECT_CODES
+          value: "599"
         - name: LOG_FORMAT_NAME
           value: 'json'
         - name: ENABLE_UUID_PARAM
@@ -47,9 +55,6 @@ spec:
           value: "FALSE"
         - name: STATSD_METRICS
           value: "FALSE"
-        - name: ADD_NGINX_LOCATION_CFG
-          value: |
-            client_max_body_size      300m;
         ports:
         - name: https
           containerPort: 10443
