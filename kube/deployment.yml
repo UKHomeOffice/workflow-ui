@@ -39,20 +39,12 @@ spec:
           value: 'http://127.0.0.1'
         - name: PROXY_SERVICE_PORT
           value: "8000"
-        - name: SERVER_CERT
-          value: "/certs/tls.crt"
-        - name: SERVER_KEY
-          value: "/certs/tls.key"
         - name: LOG_FORMAT_NAME
           value: 'json'
         - name: ENABLE_UUID_PARAM
           value: "FALSE"
         - name: NAXSI_USE_DEFAULT_RULES
           value: "FALSE"
-        - name: PORT_IN_HOST_HEADER
-          value: "FALSE"
-        - name: ERROR_REDIRECT_CODES
-          value: "599"
         - name: STATSD_METRICS
           value: "FALSE"
         - name: ADD_NGINX_LOCATION_CFG
