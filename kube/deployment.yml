@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: {{.WORKFLOW_UI_NAME}}
   labels:
-    service: {{ .IDENTITY_SERVICE_API_NAME }}
+    service: {{.WORKFLOW_UI_NAME}}
 spec:
   selector:
     matchLabels:
@@ -34,7 +34,7 @@ spec:
           runAsUser: 1000
           runAsNonRoot: true
         command: ["/bin/sh"]
-        args: ["-c", "/app/run.sh -Djava.security.egd=file:/dev/./urandom -Djavax.net.ssl.trustStore=/etc/keystore/cacerts -Djavax.net.ssl.trustStoreType=pkcs12 -Djavax.net.ssl.trustStorePassword=changeit -jar /app/{{ .IDENTITY_SERVICE_API_NAME }}.jar"]          
+        args: ["-c", "/app/run.sh -Djava.security.egd=file:/dev/./urandom -Djavax.net.ssl.trustStore=/etc/keystore/cacerts -Djavax.net.ssl.trustStoreType=pkcs12 -Djavax.net.ssl.trustStorePassword=changeit -jar /app/{{ .WORKFLOW_UI_NAME }}.jar"]
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: "{{.SPRING_PROFILES_ACTIVE}}"
