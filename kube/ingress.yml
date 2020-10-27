@@ -20,7 +20,7 @@ spec:
       paths:
       - backend:
           serviceName: {{.WORKFLOW_UI_NAME}}
-          servicePort: 10443
+          servicePort: 8443
         path: /
   tls:
   - hosts:
