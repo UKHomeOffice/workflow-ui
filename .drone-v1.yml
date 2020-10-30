@@ -20,6 +20,7 @@ steps:
     DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
     DRONE_TOKEN:
       from_secret: DRONE_PUBLIC_TOKEN
+    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
   when:
     event:
     - promote
@@ -38,6 +39,7 @@ steps:
     DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
     DRONE_TOKEN:
       from_secret: DRONE_PUBLIC_TOKEN
+    DRONE_VERSION: ${DRONE_SYSTEM_VERSION}
   when:
     event:
     - promote
