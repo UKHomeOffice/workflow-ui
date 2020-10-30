@@ -36,7 +36,7 @@ spec:
           cpu: "100m"
         env:
         - name: PROXY_SERVICE_HOST
-          value: 'http://127.0.0.1'
+          value: '127.0.0.1'
         - name: PROXY_SERVICE_PORT
           value: "8000"
         - name: SERVER_CERT
@@ -49,12 +49,11 @@ spec:
           value: "FALSE"
         - name: NAXSI_USE_DEFAULT_RULES
           value: "FALSE"
-        - name: PORT_IN_HOST_HEADER
-          value: "FALSE"
-        - name: ERROR_REDIRECT_CODES
-          value: "599"
         - name: STATSD_METRICS
           value: "FALSE"
+        - name: ADD_NGINX_LOCATION_CFG
+          value: |
+            client_max_body_size      300m;
         ports:
         - name: https
           containerPort: 10443
