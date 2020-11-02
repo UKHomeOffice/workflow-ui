@@ -38,9 +38,7 @@ const AccessibilityStatement = () => (
             <li>
               The main headings on each page are paragraphs (
               {'<p>'}
-              ) and not
-              {'<h1>'}
-              .
+              ) and not h1.
             </li>
           </ul>
           <p className="govuk-body">We know some parts of this website are not fully accessible. You can see a full list of any issues we currently know about in the Non-accessible content section of this statement.</p>
@@ -130,8 +128,8 @@ const AccessibilityStatement = () => (
           <p className="govuk-body">At this time, we have not identified any content that is not within scope of the accessibility regulations.</p>
 
           <h2 className="govuk-heading-l">Preparation of this accessibility statement</h2>
-          <p className="govuk-body">This statement was prepared on 21 October 2020. It was last reviewed on 20th October 2020.</p>
-          <p className="govuk-body">This website was last tested on 20th October 2020. The test was carried out by the Home Office’s Quality Assurance and Testing team.</p>
+          <p className="govuk-body">This statement was prepared on 21 October 2020. It was last reviewed on 20 October 2020.</p>
+          <p className="govuk-body">This website was last tested on 20 October 2020. The test was carried out by the Home Office’s Quality Assurance and Testing team.</p>
           <p className="govuk-body">We tested the service based on a user&apos;s ability to complete key journeys. All parts of the chosen journeys were tested.</p>
         </div>
       </div>
