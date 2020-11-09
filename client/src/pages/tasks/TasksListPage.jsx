@@ -33,7 +33,7 @@ const TasksListPage = () => {
             cancelToken: source.token,
             data: {
               orQueries: [{
-              #  candidateGroups: keycloak.tokenParsed.groups,
+              /*  candidateGroups: keycloak.tokenParsed.groups, */
                 assignee: keycloak.tokenParsed.email,
               }],
             },
@@ -49,7 +49,7 @@ const TasksListPage = () => {
             },
             data: {
               orQueries: [{
-              #  candidateGroups: keycloak.tokenParsed.groups,
+              /*  candidateGroups: keycloak.tokenParsed.groups, */
                 assignee: keycloak.tokenParsed.email,
               }],
             },
@@ -110,7 +110,7 @@ const TasksListPage = () => {
     };
   }, [setData, axiosInstance, data.maxResults,
     data.page, keycloak.tokenParsed.email, isMounted, data.search]);
-  # data.page, keycloak.tokenParsed.email, keycloak.tokenParsed.groups, isMounted, data.search]);
+  /* data.page, keycloak.tokenParsed.email, keycloak.tokenParsed.groups, isMounted, data.search]); */
 
   if (data.isLoading) {
     return <ApplicationSpinner />;

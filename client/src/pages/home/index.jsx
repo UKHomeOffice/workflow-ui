@@ -55,7 +55,7 @@ const Home = () => {
         cancelToken: source.token,
         data: {
           orQueries: [{
-            # candidateGroups: keycloak.tokenParsed.groups,
+            /* candidateGroups: keycloak.tokenParsed.groups, */
             assignee: keycloak.tokenParsed.email,
           }],
         },
@@ -80,7 +80,7 @@ const Home = () => {
       source.cancel('Cancelling request');
     };
   }, [axiosInstance, setFormsCount, setTasksCount, isMounted,
-    # keycloak.tokenParsed.groups,
+    /* keycloak.tokenParsed.groups, */
     keycloak.tokenParsed.email]);
 
   return (
