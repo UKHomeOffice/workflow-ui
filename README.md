@@ -27,7 +27,7 @@ The following properties need to be configured in AWS secrets manager (example f
 {
   "auth.url": "http://localhost:8080/auth",
   "auth.realm": "elf",
-  "auth.clientId": "eforms",
+  "auth.clientId": "local",
   "formApi.url": "http://localhost:4000",
   "serviceDesk.url": "service desk url",
   "uiEnvironment": "LOCAL",
