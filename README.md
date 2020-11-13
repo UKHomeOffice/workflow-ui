@@ -1,12 +1,12 @@
 # Workflow Service UI
 
-![Workflow UI CI](https://github.com/DigitalPatterns/workflow-ui/workflows/Workflow%20UI%20CI/badge.svg)
+![Build Status](https://github.com/UKHomeOffice/workflow-ui/workflows/Publish%20Docker/badge.svg)
 
 Provides a UI for completing forms and actioning tasks.
 
 # Server
 
-The spring boot application provides a server to serve the client code but also 
+The spring boot application provides a server to serve the client code but also
 acts as a reverse proxy removing the need to provide any additional configuration set up in the UI.
 
 ## Bootstrap configuration
