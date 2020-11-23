@@ -84,7 +84,7 @@ describe('FormPage', () => {
       await wrapper.update();
     });
     expect(wrapper.find(ApplicationSpinner).exists()).toBe(false);
-    expect(mockAxios.history.get.length).toBe(1);
+    expect(mockAxios.history.get.length).toBe(2);
   });
 
   it('can submit the form', async () => {

@@ -110,7 +110,8 @@ const TasksListPage = () => {
     };
   }, [setData, axiosInstance, data.maxResults,
     data.page, keycloak.tokenParsed.email, isMounted, data.search]);
-  /* data.page, keycloak.tokenParsed.email, keycloak.tokenParsed.groups, isMounted, data.search]); */
+  /* data.page, keycloak.tokenParsed.email,
+  keycloak.tokenParsed.groups, isMounted, data.search]); */
 
   if (data.isLoading) {
     return <ApplicationSpinner />;
