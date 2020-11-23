@@ -12,7 +12,7 @@ spec:
         matchLabels:
           name: ingress-external
     ports:
-      - port: 10443
+      - port: 8443
         protocol: TCP
   podSelector:
     matchLabels:
