@@ -27,6 +27,24 @@ const FormPage = ({ formId }) => {
   useEffect(() => {
     const source = axios.CancelToken.source();
 
+    const formPageTitle = async () => {
+      if (axiosInstance) {
+        try {
+          const formName = await axiosInstance.get(
+            `/camunda/engine-rest/process-definition/key/${formId}`,
+            {
+              cancelToken: source.token,
+            },
+          );
+          if (formName && formName.data) {
+            document.title = `${formName.data.name} | eForms`;
+          }
+        } catch (e) {
+          document.title = 'eForms';
+        }
+      }
+    };
+
     const loadForm = async () => {
       if (axiosInstance) {
         try {
@@ -60,6 +78,7 @@ const FormPage = ({ formId }) => {
     };
 
     loadForm().then(() => {});
+    formPageTitle();
     return () => {
       source.cancel('cancelling request');
     };
