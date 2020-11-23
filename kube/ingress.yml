@@ -12,7 +12,7 @@ metadata:
     ingress.kubernetes.io/force-ssl-redirect: "true"
     ingress.kubernetes.io/proxy-send-timeout: "3600"
     ingress.kubernetes.io/proxy-read-timeout: "3600"
-    ingress.kubernetes.io/proxy-body-size: "300m"
+    ingress.kubernetes.io/proxy-body-size: "50m"
 spec:
   rules:
   - host: {{.WORKFLOW_UI_URL}}
@@ -20,7 +20,7 @@ spec:
       paths:
       - backend:
           serviceName: {{.WORKFLOW_UI_NAME}}
-          servicePort: 8443
+          servicePort: 10443
         path: /
   tls:
   - hosts:
