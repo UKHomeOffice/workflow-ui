@@ -23,9 +23,9 @@ jobs:
         run: npm run test-coverage
         env:
           CI: true
-      - uses: joschi/setup-jdk@v1
+      - uses: joschi/setup-jdk@v2
         with:
-          java-version: 'openjdk14'
+          java-version: '11'
           architecture: 'x64'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
