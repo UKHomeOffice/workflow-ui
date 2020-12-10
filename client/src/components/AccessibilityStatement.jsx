@@ -30,11 +30,10 @@ const AccessibilityStatement = () => (
           <p className="govuk-body">We aim to meet international accessibility guidelines. However, this may not always be possible, or we may have missed a problem.</p>
           <p className="govuk-body">Some people may find parts of this service difficult to use because:</p>
           <ul className="govuk-list govuk-list--bullet">
-            <li>The JAWS screen reader is not compatible with the Edge Chromium browser, which is the Home Office standard.</li>
             <li>Skip to content does not highlight the body of text that it skips to.</li>
-            <li>Questions on the form and some labels in names, such as the forms page, are unable to be identified by the screen reader. The NVDA screen reader is able to read text fields, tabs, links and radio buttons.</li>
+            <li>Questions on the form and some labels in names, such as the forms page, are unable to be identified by the screen reader. The NVDA screen reader can read text fields, tabs, links and radio buttons.</li>
+            <li>The JAWS screen reader does not read options in drop down lists and users are unable to use their keyboard to navigate through drop down lists with JAWS running in the background</li>
             <li>Fields are only auto completed from information in the user’s profile on eForms and not from their browser.</li>
-            <li>Headings and titles on eForms and pages do not get read out by the screen reader.</li>
             <li>
               The main headings on each page are paragraphs (
               {'<p>'}
@@ -86,18 +85,15 @@ const AccessibilityStatement = () => (
             {' '}
             AA standard. The non-compliances are listed below.
           </p>
-          <h2 className="govuk-heading-l">Non accessible content</h2>
+          <h2 className="govuk-heading-l">Non-accessible content</h2>
           <p className="govuk-body">The content listed below is non-accessible for the following reasons.</p>
 
           <h3 className="govuk-heading-m">Non-compliance with the accessibility regulations</h3>
           <ul className="govuk-list govuk-list--bullet">
             <li>Identify input purpose (1.3.5) – we autocomplete from information in the user’s profile in our forms, not from the browser.</li>
             <li>Bypass block (2.4.1) – the skip to content doesn’t highlight the body of text.</li>
-            <li>Parsing (4.1.1) – ID must be unique to differentiate each element from another in single sign-on, reports and forms page.</li>
+            <li>Parsing (4.1.1) – ID must be unique to differentiate each element from another in single sign-on and forms page.</li>
             <li>Name, Role, Value (4.1.2) – Keycloak page aria-hidden attribute on an element removes the element and all its child nodes from the accessibility API.</li>
-            <li>Status Message (4.1.3) – status messages/validation errors can be read by screen readers, however screen readers are unable to read questions within the form.</li>
-            <li>Site name not included in the browser tab for all eForms.</li>
-            <li>Home Office Operations or Project Name Request eForms – a sentence on the start page contains more than 25 words in 1 sentence.</li>
             <li>There is no heading 1 (h1) on all eForms.</li>
           </ul>
           <h3 className="govuk-heading-m">What we’re doing to improve accessibility</h3>
@@ -111,15 +107,12 @@ const AccessibilityStatement = () => (
           <p className="govuk-body">We plan to identify and fix the following areas to be fully compliant by the dates set:</p>
           <p className="govuk-body">By end January 2021</p>
           <ul className="govuk-list govuk-list--bullet">
-            <li>Site name not included in the browser tab for all eForms.</li>
-            <li>Home Office Operations or Project Name Request eForms – sentences will be reduced to a maximum 25 words.</li>
             <li>Heading 1 (h1) will be included across eForms.</li>
           </ul>
           <p className="govuk-body">By March 2021</p>
           <ul className="govuk-list govuk-list--bullet">
             <li>(4.1.1) The value assigned to an ARIA ID to be made unique to prevent the second instance from being overlooked by assistive technology.</li>
             <li>(4.1.2) Aria-hidden elements updated so they do not contain focusable elements.</li>
-            <li>(4.1.3) Screen readers to identify and read questions on the eForms.</li>
           </ul>
 
           <h3 className="govuk-heading-m">Content that’s not within the scope of the accessibility regulations</h3>
@@ -128,7 +121,7 @@ const AccessibilityStatement = () => (
           <p className="govuk-body">At this time, we have not identified any content that is not within scope of the accessibility regulations.</p>
 
           <h2 className="govuk-heading-l">Preparation of this accessibility statement</h2>
-          <p className="govuk-body">This statement was prepared on 21 October 2020. It was last reviewed on 20 October 2020.</p>
+          <p className="govuk-body">This statement was prepared on 21 October 2020. It was last reviewed on 2 December 2020.</p>
           <p className="govuk-body">This website was last tested on 20 October 2020. The test was carried out by the Home Office’s Quality Assurance and Testing team.</p>
           <p className="govuk-body">We tested the service based on a user&apos;s ability to complete key journeys. All parts of the chosen journeys were tested.</p>
         </div>
