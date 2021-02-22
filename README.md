@@ -1,4 +1,4 @@
-# Workflow Service UI
+# eForms Workflow Service UI
 
 ![Build Status](https://github.com/UKHomeOffice/workflow-ui/workflows/Publish%20Docker/badge.svg)
 
